@@ -14,5 +14,7 @@ return {
     	{ "savq/melange-nvim", priority = 1000 },
 
     	{ "vague2k/vague.nvim", priority = 1001 },
-	{ "rose-pine/neovim", name = "rose-pine" },
+	{ "rose-pine/neovim", name = "rose-pine"},
+
+	{'AlexvZyl/nordic.nvim', name="nordic", priority=1000}
 }

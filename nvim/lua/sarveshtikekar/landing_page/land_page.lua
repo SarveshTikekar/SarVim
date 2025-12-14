@@ -1,6 +1,7 @@
 local M = {}
 
 function M.show()
+
     -----------------------------------------------------------
     -- MULTILINE ASCII ART (clean + readable)
     -----------------------------------------------------------
@@ -39,7 +40,10 @@ function M.show()
     -----------------------------------------------------------
     -- Create a new empty buffer
     -----------------------------------------------------------
-    vim.cmd("enew")
+    local prev_buf = vim.api.nvim_get_current_buf()
+    local buf = vim.api.nvim_create_buf(false, true)
+    vim.api.nvim_set_current_buf(buf)
+
     vim.opt_local.modifiable = true
     vim.opt_local.number = false
     vim.opt_local.relativenumber = false
