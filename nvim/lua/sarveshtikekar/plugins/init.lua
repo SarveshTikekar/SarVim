@@ -16,5 +16,10 @@ return {
     	{ "vague2k/vague.nvim", priority = 1001 },
 	{ "rose-pine/neovim", name = "rose-pine"},
 
-	{'AlexvZyl/nordic.nvim', name="nordic", priority=1000}
+	{'AlexvZyl/nordic.nvim', name="nordic", priority=1000},
+	{"hrsh7th/nvim-cmp", dependencies={
+		"hrsh7th/cmp-nvim-lsp"
+	}},
+
+	{"mbbill/undotree", cmd="UndotreeToggle"}
 }

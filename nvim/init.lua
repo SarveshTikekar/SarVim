@@ -31,3 +31,16 @@ math.randomseed(os.time())
 global.themeCount = #(themeList.themes)
 global.currThemeNumber = math.random(global.themeCount)
 vim.cmd("colorscheme " .. themeList.themes[global.currThemeNumber])
+
+--[[
+vim.diagnostic.config({
+  virtual_text = {
+    spacing = 2,
+    prefix = "●",
+  },
+  signs = false,
+  underline = true,
+  update_in_insert = false,
+})
+
+]]

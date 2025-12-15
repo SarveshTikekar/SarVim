@@ -90,9 +90,10 @@ vim.keymap.set({'n'}, "sv", ":w" .. ent, {noremap=true})
 vim.keymap.set({'n'}, "sq", ":wq!" .. ent, {noremap=true})
 
 -- Branching keymaps
+
+local branches = require("sarveshtikekar.branches")
 vim.keymap.set("n", "cub", function()
     local buf = vim.api.nvim_get_current_buf()
-    local branches = require("sarveshtikekar.branches")
     local curr = branches.get_active_branch()
 
     vim.notify(
@@ -101,6 +102,25 @@ vim.keymap.set("n", "cub", function()
         " branch=" .. tostring(curr)
     )
 end)
+
+vim.keymap.set("n", "<leader>c", function() 
+	branches.create_checkpoint_from_current_branch()
+end, {noremap=true, silent=true})
+
+
+vim.keymap.set("n", "<leader>jc", function() 
+	branches.jump_to_checkpoint_on_curr_branch()
+end, {noremap=true, silent=true})
+
+
+vim.keymap.set("n", "<leader>jb", function() 
+	branches.jump_to_checkpoint_on_other_branch()
+end, {noremap=true, silent=true})
+
+
+vim.keymap.set("n", "<leader>lc", function() 
+	branches.list_all_checkpoints()
+end, {noremap=true, silent=true})
 
 -- Theme toggler (Incremental)
 vim.keymap.set({'n', 'v'}, "tg", function() 
@@ -127,3 +147,15 @@ vim.keymap.set({'n', 'v'}, "gt", function()
 	vim.cmd("colorscheme " .. themes[global.currThemeNumber])
 	vim.notify("The current theme is: " ..themes[global.currThemeNumber])
 end, {noremap=true})
+
+
+-- For undotree
+vim.keymap.set({'n', 'v'}, "<leader>u", function() 
+	vim.cmd("UndotreeToggle")
+end, {noremap=true, silent=true})
+
+-- Lazy commands
+
+vim.keymap.set({'n', 'v'}, "lsy", function() 
+	vim.cmd("Lazy sync")
+end, {noremap=true, silent=true})
