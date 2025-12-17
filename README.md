@@ -1,19 +1,6 @@
-```
-                                                                                         
-                           ______         ____        _____    ____      ____  ____      ______  _______   
-                       ___|\     \   ____|\   \   ___|\    \  |    |    |    ||    |    |      \/       \  
-                      |    |\     \ /    /\    \ |    |\    \ |    |    |    ||    |   /          /\     \ 
-                      |    |/____/||    |  |    ||    | |    ||    |    |    ||    |  /     /\   / /\     |
-                   ___|    \|   | ||    |__|    ||    |/____/ |    |    |    ||    | /     /\ \_/ / /    /|
-                  |    \    \___|/ |    .--.    ||    |\    \ |    |    |    ||    ||     |  \|_|/ /    / |
-                  |    |\     \    |    |  |    ||    | |    ||\    \  /    /||    ||     |       |    |  |
-                  |\ ___\|_____|   |____|  |____||____| |____|| \ ___\/___ / ||____||\____\       |____|  /
-                  | |    |     |   |    |  |    ||    | |    | \ |   ||   | / |    || |    |      |    | / 
-                   \|____|_____|   |____|  |____||____| |____|  \|___||___|/  |____| \|____|      |____|/  
-                      \(    )/       \(      )/    \(     )/      \(    )/      \(      \(          )/     
-                       '    '         '      '      '     '        '    '        '       '          '      
-                                                                                                           
-```
+
+<img width="1366" height="706" alt="image" src="https://github.com/user-attachments/assets/80e8f703-98ba-4d06-bb37-39cc84703689" />
+
 ## 🚀 About
 
 **SarVim** is my personal Neovim + Tmux setup focused on **clarity, control, and learning** rather than stacking prebuilt configs.
@@ -29,7 +16,6 @@ It is built incrementally to understand:
 ## ✨ Features (WIP)
 
 - ⚙️ Custom keymaps written from scratch
-- 🌿 Buffer-local branching system
 - ⏱️ Checkpoints built on top of Neovim’s undo tree
 - 🎨 Random & toggleable themes
 - 📦 Lazy vim plugin manager (Without UI)
