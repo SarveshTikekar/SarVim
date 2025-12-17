@@ -218,7 +218,6 @@ vim.api.nvim_create_autocmd("BufWipeout", {
 vim.api.nvim_create_autocmd("BufEnter", {
 	callback = function()
 		ensure_buffer_state()
-		vim.notify("Branches are created and currently at: " .. M.BRANCH_STORE[current_buf()].active_branch)
 	end
 })
 return M
