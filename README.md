@@ -1,5 +1,5 @@
 
-<img width="1366" height="706" alt="image" src="https://github.com/user-attachments/assets/80e8f703-98ba-4d06-bb37-39cc84703689" />
+<img width="1363" height="691" alt="image" src="https://github.com/user-attachments/assets/ab285877-6b05-45d7-9bba-869eb731fb0b" />
 
 ## 🚀 About
 
@@ -26,15 +26,18 @@ It is built incrementally to understand:
 <h1> File Tree Structure </h1>
 
 ```
-├── init.lua (Main entry point when nvim gets loaded)
+├── init.lua (Main Entry to the Setup)
 ├── lazy-lock.json
 └── lua
     └── sarveshtikekar
-        ├── branches.lua
-        ├── checkpts.lua
+        ├── branches
+        │   └── init.lua
         ├── landing_page
-        │   └── land_page.lua
+        │   ├── land_page.lua
+        │   └── quotes.txt
         ├── lsp.lua
+        ├── lualine_config
+        │   └── init.lua
         ├── plugins
         │   └── init.lua
         ├── remaps.lua
