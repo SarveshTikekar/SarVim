@@ -107,6 +107,10 @@ vim.keymap.set("n", "<leader>c", function()
 	branches.create_checkpoint_from_current_branch()
 end, {noremap=true, silent=true})
 
+vim.keymap.set({"n", "v"}, "<leader>cb", function() 
+	branches.create_checkpoint_on_new_branch()
+end, {noremap=true, silent=true})
+
 
 vim.keymap.set("n", "<leader>jc", function() 
 	branches.jump_to_checkpoint_on_curr_branch()
@@ -117,9 +121,12 @@ vim.keymap.set("n", "<leader>jb", function()
 	branches.jump_to_checkpoint_on_other_branch()
 end, {noremap=true, silent=true})
 
-
 vim.keymap.set("n", "<leader>lc", function() 
 	branches.list_all_checkpoints()
+end, {noremap=true, silent=true})
+
+vim.keymap.set({"v", "n"}, "<leader>b", function() 
+	branches.get_branches_list()
 end, {noremap=true, silent=true})
 
 -- Theme toggler (Incremental)
@@ -155,7 +162,18 @@ vim.keymap.set({'n', 'v'}, "<leader>u", function()
 end, {noremap=true, silent=true})
 
 -- Lazy commands
-
 vim.keymap.set({'n', 'v'}, "lsy", function() 
 	vim.cmd("Lazy sync")
 end, {noremap=true, silent=true})
+
+
+vim.keymap.set({"v", "n"}, "gtp", function()
+    local template_path = vim.fn.expand("~/template.cpp")
+    local lines = vim.fn.readfile(template_path)
+    
+    if lines then
+        local line_num = vim.api.nvim_win_get_cursor(0)[1]
+        
+        vim.api.nvim_buf_set_lines(0, line_num, line_num, false, lines) 
+    end
+end, { noremap = true, silent = true })
