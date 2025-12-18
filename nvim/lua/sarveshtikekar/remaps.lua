@@ -139,7 +139,6 @@ vim.keymap.set({'n', 'v'}, "tg", function()
 	end
 
 	vim.cmd("colorscheme " .. themes[global.currThemeNumber])
-	vim.notify("The current theme is: " ..themes[global.currThemeNumber])
 end, {noremap=true})
 
 -- Theme toggler (Decremental)
@@ -152,7 +151,6 @@ vim.keymap.set({'n', 'v'}, "gt", function()
 	end
 
 	vim.cmd("colorscheme " .. themes[global.currThemeNumber])
-	vim.notify("The current theme is: " ..themes[global.currThemeNumber])
 end, {noremap=true})
 
 

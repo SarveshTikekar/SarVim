@@ -1,3 +1,5 @@
+--Logic for branching and checkpoint tree
+
 local M = {}
 M.BRANCH_STORE = {}
 

@@ -36,4 +36,7 @@ vim.cmd("colorscheme " .. themeList.themes[global.currThemeNumber])
 
 vim.opt.undofile = true
 vim.opt.undolevels = 10000
-vim.opt.undoreload = 10000 
+vim.opt.undoreload = 10000
+
+-- Lualine Config import
+require("sarveshtikekar.lualine_config")

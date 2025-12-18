@@ -21,5 +21,7 @@ return {
 		"hrsh7th/cmp-nvim-lsp"
 	}},
 
-	{"mbbill/undotree", cmd="UndotreeToggle"}
+	{"mbbill/undotree", cmd="UndotreeToggle"},
+	{'nvim-lualine/lualine.nvim',
+    dependencies = {'nvim-tree/nvim-web-devicons'}},
 }
