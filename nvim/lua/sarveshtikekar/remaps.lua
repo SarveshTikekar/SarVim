@@ -21,10 +21,11 @@ end, {silent = true})
 
 -- Set / reset line numbers
 vim.keymap.set({'v', 'n'}, "ln", ":set nu" .. ent, {noremap = true, silent=true})
-vim.keymap.set({'v', 'n'}, "nl", ":set nonumber" .. ent, {noremap = true, silent = true})
+vim.keymap.set({'v', 'n'}, "nl", ":set nonu" .. ent, {noremap = true, silent = true})
 
 -- Set / Reset relative line numbers
-vim.keymap.set({'v', 'n'}, "ln", ":set nu" .. ent, {noremap = true, silent=true})
+vim.keymap.set({'v', 'n'}, "rln", ":set rnu" .. ent, {noremap = true, silent=true})
+vim.keymap.set({'v', 'n'}, "nlr", "set nornu" .. ent, {noremap=true, silent=true})
 
 -- Screenshot yank (Selecting entire file text)
 vim.keymap.set({'v', 'n'}, "syk", function()
@@ -164,7 +165,7 @@ vim.keymap.set({'n', 'v'}, "lsy", function()
 	vim.cmd("Lazy sync")
 end, {noremap=true, silent=true})
 
-
+-- Template render for C++ DSA / CP
 vim.keymap.set({"v", "n"}, "gtp", function()
     local template_path = vim.fn.expand("~/template.cpp")
     local lines = vim.fn.readfile(template_path)
@@ -175,3 +176,19 @@ vim.keymap.set({"v", "n"}, "gtp", function()
         vim.api.nvim_buf_set_lines(0, line_num, line_num, false, lines) 
     end
 end, { noremap = true, silent = true })
+
+-- Undo backward command (Preceed keymap by seconds)
+vim.keymap.set({"v", "n"}, "<leader>u", function() 
+	
+	local count = vim.v.count --If nothing given as arg, this defaults back to 0
+	vim.cmd("earlier " .. count .. "s")
+	vim.notify("Reverted back to file state at: " .. os.date("%X", os.time() - count))
+end, {silent=true, noremap=true})
+
+-- Undo forward command (Preceed keymap by seconds)
+vim.keymap.set({"v", "n"}, "<leader>f", function() 
+	
+	local count = vim.v.count --If nothing given as arg, this defaults back to 0
+	vim.cmd("later " .. count .. "s")
+	vim.notify("Reverted back to file state at: " .. os.date("%X", os.time() - count))
+end, {silent=true, noremap=true})

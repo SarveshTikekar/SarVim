@@ -38,6 +38,11 @@ require('lualine').setup {
 		return require("sarveshtikekar.branches").get_active_branch()
 	end, 
 	icon = "󰙅", color = {fg = colors.tail_cyan, bg = colors.grey, gui = 'bold'},
+    },
+    	-- Function to display current checkpoint on branch
+	{function() 	
+		return require("sarveshtikekar.branches").get_active_checkpoint()
+	end, icon="", color = {fg = colors.tail_cyan, bg = colors.grey, gui = 'bold'},
     }},
     lualine_x = {{
 	    function()

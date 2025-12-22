@@ -40,3 +40,6 @@ vim.opt.undoreload = 10000
 
 -- Lualine Config import
 require("sarveshtikekar.lualine_config")
+
+-- For autocompletions
+require("sarveshtikekar.autocompletions")

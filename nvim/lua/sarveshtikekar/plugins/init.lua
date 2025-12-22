@@ -24,4 +24,8 @@ return {
 	{"mbbill/undotree", cmd="UndotreeToggle"},
 	{'nvim-lualine/lualine.nvim',
     dependencies = {'nvim-tree/nvim-web-devicons'}},
+
+    {"L3MON4D3/LuaSnip",
+	tag = "v2.4.1",
+	run = "make install_jsregexp"},
 }

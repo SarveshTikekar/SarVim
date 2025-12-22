@@ -13,7 +13,7 @@ local function current_buf()
 end
 
 local function get_safe_path()
-    local path = vim.api.nvim_buf_get_name(current_buf())
+   local path = vim.api.nvim_buf_get_name(current_buf())
     if path == "" then return nil end
     return DATA_PATH .. path:gsub("[\\/:]", "%%") .. ".json"
 end
@@ -61,11 +61,18 @@ local function ensure_buffer_state()
                 root = "buffer-main",
                 branches = {
                     ["dev"] = {
-                        checkpoints = {},
-                        history = {}
+                        checkpoints = {
+				["dev-init"] = {
+
+					["seq_no"] = get_current_seq(),
+        				["time_and_date"] = os.date("%c")
+				}
+			},
+                        history = {"dev-init"},
                     },
                 },
                 active_branch = "dev",
+		active_checkpoint_on_branch = "dev-init",
             }
         end
     end
@@ -85,8 +92,13 @@ local function search_checkpoint(checkpoint_history, ckpName)
 end
 
 M.get_active_branch = function()
-    local state = ensure_buffer_state()
-    return state.active_branch
+	local state = ensure_buffer_state()
+	return state.active_branch
+end
+
+M.get_active_checkpoint = function()
+	local state = ensure_buffer_state()
+	return state.active_checkpoint_on_branch
 end
 
 M.create_branch = function(branch_name)
@@ -106,21 +118,6 @@ M.create_branch = function(branch_name)
     state.active_branch = branch_name
     save_to_disk()
     vim.notify("Created and switched to branch: " .. branch_name)
-end
-
-M.switch_branch = function(branch_name)
-    if not branch_name or branch_name == "" then
-        vim.notify("Branch name required", vim.log.levels.ERROR)
-        return
-    end
-    local state = ensure_buffer_state()
-    if not state.branches[branch_name] then
-        vim.notify("Branch does not exist: " .. branch_name, vim.log.levels.ERROR)
-        return
-    end
-    state.active_branch = branch_name
-    save_to_disk()
-    vim.notify("Switched to branch: " .. branch_name)
 end
 
 M.get_branches_list = function()
@@ -150,10 +147,11 @@ M.create_checkpoint_from_current_branch = function()
     end
     local checkPoint = {
         ["seq_no"] = get_current_seq(),
-        ["time_and_date"] = os.date("%c"),
+        ["time_and_date"] = os.date("%c")
     }
     currBranchInfo.checkpoints[ckpName] = checkPoint
     table.insert(currBranchInfo.history, ckpName)
+    state.active_checkpoint_on_branch = ckpName
     save_to_disk()
     vim.notify(ckpName .. " checkpoint created successfully on branch " .. currBranchName)
 end
@@ -173,7 +171,11 @@ M.create_checkpoint_on_new_branch = function()
     end
     vim.cmd("w!")   
     local ckpName = vim.fn.input("Enter checkpoint name: ")
-    if ckpName == "" or ckpName == nil then return end
+
+    --If no name specified, we create a default checkpoint called <branchname>-init
+    if ckpName == "" or ckpName == nil then 
+	    ckpName = branchName .. "-init"
+    end
     local currBranchInfo = state.branches[branchName]
     if search_checkpoint(currBranchInfo.history, ckpName) then
         vim.notify("Checkpoint already exists.")
@@ -186,6 +188,7 @@ M.create_checkpoint_on_new_branch = function()
     currBranchInfo.checkpoints[ckpName] = checkPoint
     currBranchInfo.history = currBranchInfo.history or {}
     table.insert(currBranchInfo.history, ckpName)
+    state.active_checkpoint_on_branch = ckpName
     save_to_disk()
     vim.notify(string.format("Checkpoint '%s' created on branch '%s'", ckpName, branchName))
 end
@@ -201,10 +204,13 @@ M.jump_to_checkpoint_on_curr_branch = function()
     end
     local seqNumber = currBranchInfo.checkpoints[checkpointName].seq_no
     vim.cmd("undo " .. seqNumber)
+    state.active_checkpoint_on_branch = checkpointName
+    save_to_disk()
     vim.notify("Jumped to savepoint " .. checkpointName)
 end
 
 M.jump_to_checkpoint_on_other_branch = function()
+
     local branchName = vim.fn.input("Enter branch name: ") 
     if branchName == "" or branchName == nil then return end
     local checkpointName = vim.fn.input("Enter checkpoint name: ")
@@ -218,6 +224,7 @@ M.jump_to_checkpoint_on_other_branch = function()
     local seqNumber = branchInfo.checkpoints[checkpointName].seq_no
     vim.cmd("undo " .. seqNumber)
     state.active_branch = branchName
+    state.active_checkpoint_on_branch = checkpointName
     save_to_disk()
     vim.notify("Jumped to " .. checkpointName .. " on branch " .. branchName)
 end 
