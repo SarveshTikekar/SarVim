@@ -40,15 +40,12 @@ function M.setup()
 
     vim.lsp.config('clangd', {
         cmd = { 
-            "clangd", 
-            "--background-index", 
-            "--clang-tidy", 
-            "--header-insertion=iwyu",
-            "--completion-style=detailed",
-            "--function-arg-placeholders=true"
+            	"clangd",
+        	"--query-driver=/usr/bin/g++,/usr/bin/gcc", 
+        	"--background-index",
+        	"--header-insertion=never",
         },
         filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto" },
-        -- Standard C++ root markers
         root_markers = { 
             ".git", 
             "compile_commands.json", 

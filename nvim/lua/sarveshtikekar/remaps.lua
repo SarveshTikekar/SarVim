@@ -25,7 +25,7 @@ vim.keymap.set({'v', 'n'}, "nl", ":set nonu" .. ent, {noremap = true, silent = t
 
 -- Set / Reset relative line numbers
 vim.keymap.set({'v', 'n'}, "rln", ":set rnu" .. ent, {noremap = true, silent=true})
-vim.keymap.set({'v', 'n'}, "nlr", "set nornu" .. ent, {noremap=true, silent=true})
+vim.keymap.set({'v', 'n'}, "nlr", ":set nornu" .. ent, {noremap=true, silent=true})
 
 -- Screenshot yank (Selecting entire file text)
 vim.keymap.set({'v', 'n'}, "syk", function()
@@ -154,7 +154,6 @@ vim.keymap.set({'n', 'v'}, "gt", function()
 	vim.cmd("colorscheme " .. themes[global.currThemeNumber])
 end, {noremap=true})
 
-
 -- For undotree
 vim.keymap.set({'n', 'v'}, "<leader>u", function() 
 	vim.cmd("UndotreeToggle")
@@ -192,3 +191,14 @@ vim.keymap.set({"v", "n"}, "<leader>f", function()
 	vim.cmd("later " .. count .. "s")
 	vim.notify("Reverted back to file state at: " .. os.date("%X", os.time() - count))
 end, {silent=true, noremap=true})
+
+
+-- Telescopic keymaps
+
+local tele = require('telescope.builtin')
+local tele_themes = require('telescope.themes')
+
+vim.keymap.set({"v", "n"}, "<leader>ff" , function()  
+	tele.find_files({hidden=true})
+end, {noremap=true, silent=true})
+vim.keymap.set({"v", "n"}, "<leader>gf", tele.live_grep, {noremap=true, silent=true})
