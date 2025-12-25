@@ -6,7 +6,9 @@ themeList.themes = {
 	"vague", 
 	"rose-pine", 
 	"catppuccin",
-	"nordic"
+	"nordic",
+	"midnight",
+	"monoglow-void",
 }
 
 return themeList
