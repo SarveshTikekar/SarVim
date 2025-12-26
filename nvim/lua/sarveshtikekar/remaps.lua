@@ -88,7 +88,10 @@ end, {noremap=true, silent=true})
 vim.keymap.set({'n'}, "sv", ":w" .. ent, {noremap=true})
 
 -- Save + quit
-vim.keymap.set({'n'}, "sq", ":wq!" .. ent, {noremap=true})
+vim.keymap.set({'n'}, "sq", function() 
+	vim.cmd("wq")
+	vim.cmd("q!")
+end, {noremap=true})
 
 -- Branching keymaps
 
@@ -155,7 +158,7 @@ vim.keymap.set({'n', 'v'}, "gt", function()
 end, {noremap=true})
 
 -- For undotree
-vim.keymap.set({'n', 'v'}, "<leader>u", function() 
+vim.keymap.set({'n', 'v'}, "<leader>ut", function() 
 	vim.cmd("UndotreeToggle")
 end, {noremap=true, silent=true})
 
@@ -191,14 +194,3 @@ vim.keymap.set({"v", "n"}, "<leader>f", function()
 	vim.cmd("later " .. count .. "s")
 	vim.notify("Reverted back to file state at: " .. os.date("%X", os.time() - count))
 end, {silent=true, noremap=true})
-
-
--- Telescopic keymaps
-
-local tele = require('telescope.builtin')
-local tele_themes = require('telescope.themes')
-
-vim.keymap.set({"v", "n"}, "<leader>ff" , function()  
-	tele.find_files({hidden=true})
-end, {noremap=true, silent=true})
-vim.keymap.set({"v", "n"}, "<leader>gf", tele.live_grep, {noremap=true, silent=true})

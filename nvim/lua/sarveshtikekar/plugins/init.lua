@@ -101,5 +101,5 @@ return {
             wrap = true,
         },
     },
-    },
+    }
 }

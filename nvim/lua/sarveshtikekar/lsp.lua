@@ -36,8 +36,6 @@ function M.setup()
         }
     })
 
-    
-
     vim.lsp.config('clangd', {
         cmd = { 
             	"clangd",
@@ -60,8 +58,45 @@ function M.setup()
         capabilities = capabilities,
     })
 
+	vim.lsp.config('vtsls', {
+	
+		settings = {
+			javascript = {
+      				updateImportsOnFileMove = { enabled = "always" },
+      				suggest = { completeFunctionCalls = true },
+    			},
+	    	},
+	})
+
+	vim.lsp.config('lua_ls', {
+    		settings = {
+        	Lua = {
+            		diagnostics = {
+                	-- Get the language server to recognize the `vim` global
+                	globals = {'vim'},
+            	},
+            	workspace = {
+                	-- Make the server aware of Neovim runtime files
+                	library = vim.api.nvim_get_runtime_file("", true),
+                	checkThirdParty = false,
+            	},
+
+            	telemetry = { enabled = false },
+        	},
+    	},})
+
+	vim.lsp.config('tailwindcss', {})
+    	vim.lsp.config('eslint', {})
+	vim.lsp.config('html-ls', {})
+	
+    -- LSP enable
+    vim.lsp.enable('vtsls')
+    vim.lsp.enable('tailwindcss')
+    vim.lsp.enable('eslint')
     vim.lsp.enable('pyright')
     vim.lsp.enable('clangd')
+    vim.lsp.enable('lua_language_server')
+    vim.lsp.enable('html-ls')
 end
 
 return M
