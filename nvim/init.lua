@@ -8,6 +8,19 @@ require("lazy").setup("sarveshtikekar.plugins", {
 	ui = {open = "none"}
 })
 
+--Glob declaration for ease
+local global = vim.g
+
+--For themes
+vim.opt.termguicolors = true
+
+-- For themes
+local themeList = require("sarveshtikekar.themeList")
+math.randomseed(os.time())
+global.themeCount = #(themeList.themes)
+global.currThemeNumber = math.random(global.themeCount)
+vim.cmd("colorscheme " .. themeList.themes[global.currThemeNumber])
+
 
 -- Main Entry to our Ricing setup
 require("sarveshtikekar.lsp").setup()
@@ -21,16 +34,6 @@ vim.api.nvim_create_autocmd("VimEnter", {
     end,
 })
 
---Glob declaration for ease
-
-local global = vim.g
-
--- For themes
-local themeList = require("sarveshtikekar.themeList")
-math.randomseed(os.time())
-global.themeCount = #(themeList.themes)
-global.currThemeNumber = math.random(global.themeCount)
-vim.cmd("colorscheme " .. themeList.themes[global.currThemeNumber])
 
 -- Some global settings for checkpointing across sessions
 
@@ -81,3 +84,4 @@ vim.api.nvim_create_autocmd("BufDelete", {
         end)
     end,
 })
+

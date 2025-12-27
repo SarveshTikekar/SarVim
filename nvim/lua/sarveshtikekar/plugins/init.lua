@@ -7,16 +7,16 @@ return {
 	"williamboman/mason-lspconfig.nvim",  
     	"neovim/nvim-lspconfig",
 	{ "catppuccin/nvim", name = "catppuccin", priority = 1000 },
+
     	{ "ellisonleao/gruvbox.nvim", priority = 1000 },
 
     	{ "savq/melange-nvim", priority = 1000 },
 
-    	{ "vague2k/vague.nvim", priority = 1000 },
+    	{ "vague2k/vague.nvim", priority = 1001 },
 	{ "rose-pine/neovim", name = "rose-pine"},
 
 	{'AlexvZyl/nordic.nvim', name="nordic", priority=1000},
-	{'dasupradyumna/midnight.nvim', priority = 1000},
-	{"wnkz/monoglow.nvim",priority = 1000},
+	{"bluz71/vim-moonfly-colors", name = "moonfly", priority = 1000},
 	{"hrsh7th/nvim-cmp", dependencies={
 		"hrsh7th/cmp-nvim-lsp"
 	}},
@@ -101,5 +101,17 @@ return {
             wrap = true,
         },
     },
+    },
+
+    {
+
+	 'nvim-treesitter/nvim-treesitter',
+    	-- Remove 'branch = "master"' if it exists, use 'main' as default
+    	build = ':TSUpdate', -- This ensures the parsers are installed
+    	opts = {
+        	ensure_installed = { 'lua', 'vim', 'javascript' }, -- Add your languages
+        	highlight = { enable = true },
+        	indent = { enable = true },
+    	},
     }
 }

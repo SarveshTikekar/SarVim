@@ -1,6 +1,7 @@
 local M = {}
 
 function M.setup()
+    
     require("mason").setup({
         ui = { border = "rounded" },
     })
@@ -96,15 +97,19 @@ function M.setup()
 	vim.lsp.config('tailwindcss', {})
     	vim.lsp.config('eslint-lsp', {})
 	vim.lsp.config('html-ls', {})
-	
+	vim.lsp.config('djlsp', {})
+	vim.lsp.config('bashls',{})
+
     -- LSP enable
     vim.lsp.enable('vtsls')
     vim.lsp.enable('tailwindcss')
     vim.lsp.enable('eslint-lsp')
     vim.lsp.enable('pyright')
     vim.lsp.enable('clangd')
-    vim.lsp.enable('lua_language_server')
+    vim.lsp.enable('lua_ls')
     vim.lsp.enable('html-ls')
+    vim.lsp.enable('djlsp')
+    vim.lsp.enable('bashls')
 end
 
 return M

@@ -7,8 +7,7 @@ themeList.themes = {
 	"rose-pine", 
 	"catppuccin",
 	"nordic",
-	"midnight",
-	"monoglow-void",
+	"moonfly",
 }
 
 return themeList
