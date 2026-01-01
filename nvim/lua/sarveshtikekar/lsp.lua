@@ -64,15 +64,7 @@ function M.setup()
 		settings = {
 			javascript = {
       				updateImportsOnFileMove = { enabled = "always" },
-      				suggest = { 
-					completeFunctionCalls = true,
-					autoImports = true, 
-                			includeCompletionsForModuleExports = true,
-				},
-
-				preferences = {
-                			importModuleSpecifierPreference = "non-relative", 
-            			}
+      				suggest = { completeFunctionCalls = true },
     			},
 	    	},
 	})
@@ -95,7 +87,7 @@ function M.setup()
     	},})
 
 	vim.lsp.config('tailwindcss', {})
-    	vim.lsp.config('eslint-lsp', {})
+    	vim.lsp.config('eslint', {})
 	vim.lsp.config('html-ls', {})
 	vim.lsp.config('djlsp', {})
 	vim.lsp.config('bashls',{})
@@ -103,7 +95,7 @@ function M.setup()
     -- LSP enable
     vim.lsp.enable('vtsls')
     vim.lsp.enable('tailwindcss')
-    vim.lsp.enable('eslint-lsp')
+    vim.lsp.enable('eslint')
     vim.lsp.enable('pyright')
     vim.lsp.enable('clangd')
     vim.lsp.enable('lua_ls')

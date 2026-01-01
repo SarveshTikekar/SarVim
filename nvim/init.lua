@@ -16,11 +16,9 @@ vim.opt.termguicolors = true
 
 -- For themes
 local themeList = require("sarveshtikekar.themeList")
-math.randomseed(os.time())
 global.themeCount = #(themeList.themes)
-global.currThemeNumber = math.random(global.themeCount)
-vim.cmd("colorscheme " .. themeList.themes[global.currThemeNumber])
-
+vim.cmd("colorscheme " .. "moonfly")
+global.currThemeNumber = 6
 
 -- Main Entry to our Ricing setup
 require("sarveshtikekar.lsp").setup()
@@ -30,6 +28,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
     callback = function()
         if vim.fn.argc() == 0 then
             require("sarveshtikekar.landing_page.land_page").show()
+	    vim.wo.relativenumber = false
         end
     end,
 })
@@ -46,6 +45,8 @@ require("sarveshtikekar.lualine_config")
 
 -- For autocompletions
 require("sarveshtikekar.autocompletions")
+
+require('sarveshtikekar.config.autocmds')
 
 -- For SarVim window UI
 local sarvimUI = vim.api.nvim_create_augroup("SarVimUI", {clear = true})
@@ -85,3 +86,10 @@ vim.api.nvim_create_autocmd("BufDelete", {
     end,
 })
 
+-- Some optimisation settings
+vim.api.nvim_create_autocmd("BufEnter", {
+	
+	callback = function()
+		vim.wo.relativenumber = true
+	end,
+})

@@ -2,7 +2,6 @@
 return {
 
 -- Mason LSP
-
     	"williamboman/mason.nvim",       
 	"williamboman/mason-lspconfig.nvim",  
     	"neovim/nvim-lspconfig",
@@ -70,38 +69,37 @@ return {
     },
 
     {
-	   "folke/trouble.nvim",
+
+	"folke/trouble.nvim",
     opts = {
         auto_close = false,      -- Don't close when items are gone
         pinned = true,           -- Bind to the current buffer and stay open
         open_no_results = true,  -- Ensure it opens even if 0 errors
         warn_no_results = false, -- Disable the default warning to use our custom text
-
         modes = {
             diagnostics = {
                 win = {
-                    position = "bottom",
-                    height = 10,
-                    width = 0.7, -- Centers the HUD horizontally
-                    wrap = true,
+                	position = "bottom", -- Anchor it to the right
+      			height = 10,
+			wrap = true
                 },
                 sections = {
                     {
-                        -- If no results, this will show your custom string
                         type = "results",
                         text = { ["no_results"] = "No issues found" },
                     }
                 },
             },
         },
+
         win = {
             position = "bottom",
             height = 10,
-            width = 0.7,
             wrap = true,
-        },
-    },
-    },
+	    winbar = " ",
+        }, 
+    }, 
+   	},
 
     {
 
@@ -113,5 +111,5 @@ return {
         	highlight = { enable = true },
         	indent = { enable = true },
     	},
-    }
+    },
 }
