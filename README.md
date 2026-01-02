@@ -1,5 +1,4 @@
-
-<img width="1363" height="691" alt="image" src="https://github.com/user-attachments/assets/ab285877-6b05-45d7-9bba-869eb731fb0b" />
+<img width="1919" height="1007" alt="SarVim Landpage" src="https://github.com/user-attachments/assets/1a3534a6-66d4-4dac-a187-450902fa439f" />
 
 ## 🚀 About
 
