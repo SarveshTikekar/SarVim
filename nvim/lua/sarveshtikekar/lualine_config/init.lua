@@ -50,7 +50,7 @@ local function setup_lualine()
             },
             lualine_x = {
                 { function()
-                    return require("sarveshtikekar.themeList").themes[vim.g.currThemeNumber]
+                    return require("sarveshtikekar.ui.themeList").themes[vim.g.currThemeNumber]
                   end, 
                   icon='', color = {fg = colors.white, bg = bgc}
                 }

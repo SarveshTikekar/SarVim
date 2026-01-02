@@ -1,34 +1,41 @@
 #!/bin/bash
 
 # ================================
-# FIXED: Removed Subshell Trap
+# FIXED: Filters Artifacts & Adds Solidity
 # ================================
 
 normalize_lang() {
     case "$1" in
-        py|pyi) echo "python" ;;
-        js|jsx|mjs|cjs) echo "javascript" ;;
-        ts|tsx) echo "typescript" ;;
+        py|pyi|python) echo "py" ;;
+        js|jsx|mjs|cjs|javascript) echo "js" ;;
+        ts|tsx|typescript) echo "ts" ;;
+        sol|solidity) echo "sol" ;;  # Added Solidity
         c|h) echo "c" ;;
         cpp|cc|cxx|hpp|hh|hxx) echo "cpp" ;;
-        rs) echo "rust" ;;
+        rs|rust) echo "rs" ;;
         go) echo "go" ;;
         lua) echo "lua" ;;
         java) echo "java" ;;
-        rb|erb) echo "ruby" ;;
+        rb|erb|ruby) echo "rb" ;;
         php|phtml) echo "php" ;;
-        sh|bash|zsh|fish) echo "shell" ;;
+        sh|bash|zsh|fish|shell) echo "sh" ;;
         html|htm) echo "html" ;;
         css|scss|sass|less) echo "css" ;;
         vue) echo "vue" ;;
         svelte) echo "svelte" ;;
+        # json) echo "json" ;; # Optional: Comment out to hide JSON completely
+        md|markdown) echo "md" ;;
+        dockerfile) echo "dockerfile" ;;
+        makefile) echo "makefile" ;;
+        yaml|yml) echo "yaml" ;;
+        toml) echo "toml" ;;
         *) return 1 ;;
     esac
 }
 
 email=$(git config --global user.email)
 if [ -z "$email" ]; then email=$(git config --global user.name); fi
-today="2025-12-31"
+today=$(date +"%F")
 
 # Capture all language outputs into a variable first
 output=$(
@@ -50,16 +57,28 @@ output=$(
                 git ls-files --others --exclude-standard 2>/dev/null
             }
         ) | while read -r file; do
-            # Filter empty lines and paths
+            # 1. Filter empty lines
             [ -z "$file" ] && continue
-            [[ "$file" == .* ]] && continue
+            
+            # 2. <<< NEW: Filter Build Artifacts & Junk >>>
+            if [[ "$file" == *"artifacts/"* ]] || \
+               [[ "$file" == *"cache/"* ]] || \
+               [[ "$file" == *"node_modules/"* ]] || \
+               [[ "$file" == *"dist/"* ]] || \
+               [[ "$file" == *"build/"* ]] || \
+               [[ "$file" == *"package-lock.json"* ]] || \
+               [[ "$file" == *"yarn.lock"* ]]; then
+                continue
+            fi
 
             # Handle filenames
             ext="${file##*.}"
+
+            # If file has no extension
             if [ "$ext" = "$file" ]; then
                 case "$file" in
-                    Dockerfile|Containerfile) ext="docker" ;;
-                    Makefile|makefile) ext="make" ;;
+                    Dockerfile|Containerfile) ext="dockerfile" ;;
+                    Makefile|makefile) ext="makefile" ;;
                     *) continue ;;
                 esac
             fi
@@ -72,7 +91,7 @@ output=$(
 
 # Check if we found anything
 if [ -z "$output" ]; then
-    echo "-"
+    echo "" 
 else
     # Sort, Count, and Print Top 3
     echo "$output" | sort | uniq -c | sort -nr | head -n 3 | awk '{print $2}' | tr '\n' ' '

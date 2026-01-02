@@ -15,7 +15,7 @@ local global = vim.g
 vim.opt.termguicolors = true
 
 -- For themes
-local themeList = require("sarveshtikekar.themeList")
+local themeList = require("sarveshtikekar.ui.themeList")
 global.themeCount = #(themeList.themes)
 vim.cmd("colorscheme " .. "moonfly")
 global.currThemeNumber = 6
@@ -93,3 +93,12 @@ vim.api.nvim_create_autocmd("BufEnter", {
 		vim.wo.relativenumber = true
 	end,
 })
+
+--Browser related optimisations
+vim.ui.open = function(path)
+
+  local browser = "google-chrome" 
+  local cmd = string.format("nohup %s --new-window '%s' > /dev/null 2>&1 &", browser, path) 
+
+  os.execute(cmd)
+end

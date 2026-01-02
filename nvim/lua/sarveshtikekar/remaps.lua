@@ -12,7 +12,7 @@ local bspace = stdk.bspace
 local global = vim.g
 
 -- User defined modules / tables
-local themeList = require("sarveshtikekar.themeList")
+local themeList = require("sarveshtikekar.ui.themeList")
 -- Explorer remaps
 vim.keymap.set("n", "<leader>z", function()
 	vim.cmd("Ex")
@@ -135,7 +135,7 @@ end, {noremap=true, silent=true})
 
 -- Theme toggler (Incremental)
 vim.keymap.set({'n', 'v'}, "tg", function() 
-	local themes = require("sarveshtikekar.themeList").themes
+	local themes = themeList.themes
 	global.currThemeNumber = (global.currThemeNumber + 1) % (global.themeCount + 1)
 
 	if global.currThemeNumber == 0 then 	
@@ -147,7 +147,7 @@ end, {noremap=true})
 
 -- Theme toggler (Decremental)
 vim.keymap.set({'n', 'v'}, "gt", function() 
-	local themes = require("sarveshtikekar.themeList").themes
+	local themes = themeList.themes 
 	global.currThemeNumber = (global.currThemeNumber - 1)
 
 	if global.currThemeNumber == 0 then
