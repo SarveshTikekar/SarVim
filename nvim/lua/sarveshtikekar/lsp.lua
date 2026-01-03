@@ -1,5 +1,25 @@
 local M = {}
 
+local function get_python_path()
+  local buf = vim.api.nvim_get_current_buf()
+
+  local root = vim.fs.root(buf, {
+    "pyproject.toml",
+    ".git",
+  })
+
+  if not root then
+    return nil
+  end
+
+  local python = root .. "/.venv/bin/python"
+  if vim.fn.executable(python) == 1 then
+    return python
+  end
+
+  return nil
+end
+
 function M.setup()
     
     require("mason").setup({
@@ -13,28 +33,41 @@ function M.setup()
 
     local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-    vim.lsp.config('pyright', {
-        cmd = { "pyright-langserver", "--stdio" },
-        filetypes = { "python" },
-        -- Native way to define markers for upward searching
-        root_markers = { ".git", "pyproject.toml", "setup.py", "requirements.txt" },
-        
-        -- Modern 0.11+ root_dir logic with fallback to CWD
-        root_dir = function(bufnr, on_dir)
-            local root = vim.fs.root(bufnr, { ".git", "pyproject.toml", "setup.py" })
-            on_dir(root or vim.fn.getcwd())
-        end,
+    vim.lsp.config('pyright',{
+		
+		cmd = { "pyright-langserver", "--stdio" },
+  filetypes = { "python" },
 
-        capabilities = capabilities,
-        settings = {
-            python = {
-                analysis = {
-                    typeCheckingMode = "basic",
-                    autoSearchPaths = true,
-                    useLibraryCodeForTypes = true,
-                }
-            }
-        }
+  root_markers = {
+    ".git",
+    "pyproject.toml",
+  },
+
+  root_dir = function(bufnr, on_dir)
+    local root = vim.fs.root(bufnr, { ".git", "pyproject.toml" })
+    on_dir(root or vim.fn.getcwd())
+  end,
+
+  before_init = function(_, config)
+    local python = get_python_path()
+
+    if python then
+      config.settings = config.settings or {}
+      config.settings.python = config.settings.python or {}
+      config.settings.python.pythonPath = python
+    end
+  end,
+
+  settings = {
+    python = {
+      analysis = {
+        typeCheckingMode = "basic",
+        autoSearchPaths = true,
+        useLibraryCodeForTypes = true,
+        diagnosticMode = "openFilesOnly",
+      },
+    },
+  },
     })
 
     vim.lsp.config('clangd', {
