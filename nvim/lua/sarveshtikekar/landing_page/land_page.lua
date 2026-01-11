@@ -14,7 +14,7 @@ local icons = require("sarveshtikekar.ui.icons")
 local function set_highlights()
   vim.api.nvim_set_hl(0, "DashGithub",    { fg = "#FFFFFF" }) -- White
   vim.api.nvim_set_hl(0, "DashLinkedin",  { fg = "#0077b5" }) -- LinkedIn Blue
-  vim.api.nvim_set_hl(0, "DashX",         { fg = "#FFFFFF" }) -- X White
+  vim.api.nvim_set_hl(0, "DashX",          { fg = "#FFFFFF" }) -- X White
   vim.api.nvim_set_hl(0, "DashInstagram", { fg = "#E1306C" }) -- Instagram Pink
 end
 set_highlights()
@@ -25,10 +25,10 @@ set_highlights()
 local LINKS = {
   { icon = "",  hl = "DashGithub",    url = "https://github.com/SarveshTikekar" },
   { icon = "",  hl = "DashLinkedin",  url = "https://linkedin.com/in/sarveshtikekar" },
-  { icon = "",   hl = "DashX",         url = "https://x.com/who_ssh" }, 
+  { icon = "",   hl = "DashX",          url = "https://x.com/who_ssh" }, 
   { icon = "",   hl = "DashInstagram", url = "https://instagram.com/_sarvesh_t" },
 }
-local GAP_STR = "   "
+local GAP_STR = "    "
 
 -- Setup nvim-web-devicons
 local has_devicons, devicons = pcall(require, "nvim-web-devicons")
@@ -40,7 +40,6 @@ local function get_lang_info(lang)
   name = name:gsub("%s+", "") -- Clean whitespace
 
   -- <<< FIX: Handle Special Filenames >>>
-  -- The bash script returns "makefile", but devicons expects "Makefile" lookup
   if name == "makefile" then 
       local i, h = devicons.get_icon("Makefile", "make", { default = false })
       return i or "", h or "DevIconMake"
@@ -49,12 +48,9 @@ local function get_lang_info(lang)
       return i or "", h or "DevIconDockerfile"
   end
 
-  -- Standard Extension Lookup
-  -- default=false prevents the "Generic File" icon from appearing on mismatch
   local icon, hl = devicons.get_icon_by_filetype(name, { default = false })
   if icon then return icon, hl end
   
-  -- Fallback: Try filename lookup just in case (e.g. Vagrantfile)
   local icon2, hl2 = devicons.get_icon(name, "", { default = false })
   if icon2 then return icon2, hl2 end
 
@@ -64,6 +60,22 @@ end
 -- =====================
 -- HELPERS
 -- =====================
+local function read_stats_from_log()
+  local path = vim.fn.expand("$HOME/.config/nvim/lua/sarveshtikekar/scripts/stats/stat-log.txt")
+  if vim.fn.filereadable(path) == 0 then
+    return { "0", "0", "0", "Unknown" }
+  end
+  
+  local lines = vim.fn.readfile(path)
+  -- Order: Till Date, Today, Streak, Langs
+  return {
+    lines[1] or "0",
+    lines[2] or "0",
+    lines[3] or "0",
+    lines[4] or "Unknown"
+  }
+end
+
 local function get_dev_quote()
   local path = vim.fn.stdpath("config") .. "/lua/sarveshtikekar/landing_page/quotes.txt"
   if vim.fn.filereadable(path) == 0 then return '"It’s all talk until the code runs."' end
@@ -142,12 +154,14 @@ function M.show()
   -- LOGO
   -- =====================
   local logo = [[
+
     ███████╗  █████╗  ██████╗  ██╗   ██╗  ██╗  ███╗   ███╗
     ██╔════╝ ██╔══██╗ ██╔══██╗ ██║   ██║  ██║  ████╗ ████║
     ███████╗ ███████║ ██████╔╝ ██║   ██║  ██║  ██╔████╔██║
     ╚════██║ ██╔══██║ ██╔══██╗ ╚██╗ ██╔╝  ██║  ██║╚██╔╝██║
     ███████║ ██║  ██║ ██║  ██║  ╚████╔╝   ██║  ██║ ╚═╝ ██║
     ╚══════╝ ╚═╝  ╚═╝ ╚═╝  ╚═╝   ╚═══╝    ╚═╝  ╚═╝     ╚═╝
+
   ]]
   local logo_lines = vim.split(logo, "\n", { trimempty = true })
   local logo_h = #logo_lines
@@ -164,14 +178,17 @@ function M.show()
   end
 
   -- =====================
-  -- STATS (With Colors)
+  -- STATS (Fetched from log file)
   -- =====================
-  local commits_today = tostring(safe(scripts.commits_today, 0))
-  local streak        = tostring(safe(scripts.streak_count, 0))
-  local total         = tostring(safe(scripts.commits_till_date, 0))
-  local lang_data     = safe(scripts.dominant_languages, {})
+  local stats = read_stats_from_log()
+  local total         = stats[1]
+  local commits_today = stats[2]
+  local streak        = stats[3]
+  local raw_langs     = stats[4]
   
-  -- 1. Build Lang String & Store Colors
+  -- Split comma-separated languages into table for icons
+  local lang_data = vim.split(raw_langs, "%s+", { trimempty = true })
+  
   local lang_str = ""
   local lang_colors = {} 
 
@@ -188,13 +205,12 @@ function M.show()
   end
   if lang_str == "" then lang_str = " unknown" end
 
-  -- 2. Draw Box
   local box_col = math.floor(win_w * 0.05)
   local box_text = { 
-     " Commits Today : " .. commits_today, 
-     " Current Streak: " .. streak .. " days", 
-     " Total Commits : " .. total,
-     " Primary Langs : " .. lang_str 
+      " Commits Today : " .. commits_today, 
+      " Current Streak: " .. streak .. " days", 
+      " Total Commits : " .. total,
+      " Primary Langs : " .. lang_str 
   }
   
   draw_box(buf, ns, logo_row, box_col, 40, box_text, "Comment") 
@@ -212,7 +228,7 @@ function M.show()
   end
 
   -- =====================
-  -- QUOTE
+  -- QUOTE & SOCIALS (Rest remains the same)
   -- =====================
   local quote = get_dev_quote()
   local q_pad = math.floor((win_w - api.nvim_strwidth(quote)) / 2)
@@ -220,11 +236,7 @@ function M.show()
   api.nvim_buf_set_lines(buf, q_row, q_row + 1, false, { string.rep(" ", q_pad) .. quote })
   api.nvim_buf_set_extmark(buf, ns, q_row, 0, { hl_group = "Comment", hl_eol = true })
 
-  -- =====================
-  -- SOCIAL ICONS
-  -- =====================
   local s_row = q_row - 3
-  
   if s_row > 0 then
     local social_str = ""
     local total_visual_width = 0
@@ -234,15 +246,13 @@ function M.show()
     end
     
     local start_col = math.floor((win_w - total_visual_width) / 2)
-    local current_byte_pos = start_col 
-    
+    local social_str = ""
     for i, item in ipairs(LINKS) do
         social_str = social_str .. item.icon
         if i < #LINKS then social_str = social_str .. GAP_STR end
     end
 
     api.nvim_buf_set_lines(buf, s_row, s_row + 1, false, { string.rep(" ", start_col) .. social_str })
-    
     local hl_cursor = start_col
     for i, item in ipairs(LINKS) do
         local icon_len = #item.icon
@@ -251,9 +261,6 @@ function M.show()
     end
   end
 
-  -- =====================
-  -- CLOCK & HANDLERS
-  -- =====================
   local function update_clock()
     if not api.nvim_buf_is_valid(buf) then return end
     api.nvim_buf_set_extmark(buf, ns, 0, 0, {
@@ -263,48 +270,28 @@ function M.show()
   timer = uv.new_timer()
   timer:start(0, 1000, vim.schedule_wrap(update_clock))
 
-  -- =====================
-  -- CLICK HANDLER
-  -- =====================
   local function open_link()
     local cursor = api.nvim_win_get_cursor(0)
     local row, col = cursor[1] - 1, cursor[2]
-
     if row == s_row then
         local line = api.nvim_get_current_line()
         local text_start_idx = string.find(line, "%S")
-        if not text_start_idx then return end 
-        
-        local indent_bytes = text_start_idx - 1
-        local rel_col = col - indent_bytes
-
+        if not text_start_idx then return end Indent_bytes = text_start_idx - 1
+        local rel_col = col - (text_start_idx - 1)
         local current_pos = 0
-        local gap_len = #GAP_STR
-        
         for i, item in ipairs(LINKS) do
             local icon_len = #item.icon 
-            
             if rel_col >= current_pos and rel_col < (current_pos + icon_len) then
-                -- <<< FIX: Use jobstart instead of os.execute to prevent pipes breaking >>>
-                local browser = "google-chrome" -- CHANGE IF NEEDED
-                
-                if vim.fn.has("mac") == 1 then
-                    vim.fn.jobstart({ "open", item.url }, { detach = true })
-                elseif vim.fn.has("unix") == 1 then
-                    -- This fully detaches the process from Neovim
-                    vim.fn.jobstart({ browser, item.url }, { detach = true })
-                else
-                    vim.fn.jobstart({ "start", item.url }, { detach = true })
-                end
-                
-                api.nvim_win_set_cursor(0, {1, 0})
+                local browser = "google-chrome"
+                if vim.fn.has("mac") == 1 then vim.fn.jobstart({ "open", item.url }, { detach = true })
+                elseif vim.fn.has("unix") == 1 then vim.fn.jobstart({ browser, item.url }, { detach = true })
+                else vim.fn.jobstart({ "start", item.url }, { detach = true }) end
                 return
             end
-            current_pos = current_pos + icon_len + gap_len
+            current_pos = current_pos + icon_len + #GAP_STR
         end
         return 
     end
-    
     if timer then timer:stop(); timer:close() end
     vim.cmd("bd!")
     vim.cmd("Explore")

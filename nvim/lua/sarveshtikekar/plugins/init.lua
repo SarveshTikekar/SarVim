@@ -112,4 +112,11 @@ return {
         	indent = { enable = true },
     	},
     },
+
+    {"sphamba/smear-cursor.nvim",
+  	opts = {
+    		smear_insert_mode = true,
+    		smear_between_neighbor_lines = true,
+  	},
+    },
 }

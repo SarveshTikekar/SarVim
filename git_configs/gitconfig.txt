@@ -1,0 +1,20 @@
+[user]
+	email = sarvesh1.tikekar@gmail.com
+	name = SarveshTikekar
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+[url "https://github.com/"]
+	insteadOf = git@github.com:
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[core]
+	hooksPath = ~/.config/.git_hooks/
+[alias]
+	pp = "!git push $@ && ~/.config/.git_hooks/post-push.sh"
