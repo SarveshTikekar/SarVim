@@ -1,4 +1,4 @@
-<img width="1919" height="1007" alt="SarVim Landpage" src="https://github.com/user-attachments/assets/1a3534a6-66d4-4dac-a187-450902fa439f" />
+<img width="1909" height="1005" alt="SarVim Landing Page" src="https://github.com/user-attachments/assets/4ed306c6-da29-4024-bc10-7407c34b0a7e" />
 
 ## 🚀 About
 
