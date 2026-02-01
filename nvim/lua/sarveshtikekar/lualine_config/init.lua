@@ -29,12 +29,11 @@ local function setup_lualine()
     require('lualine').setup {
         options = {
             theme = bubble_theme,
-            component_separators = '',
-            section_separators = { left = '', right = '' },
+            component_separators = '', 
         },
         -- SECTIONS must be out here, not inside options
         sections = {
-            lualine_a = { { 'mode', separator = { left = '' }, right_padding = 2 } },
+            lualine_a = { { 'mode', separator = { right = '' }, right_padding = 2 } },
             lualine_b = { {'filename'}, {'branch', icon = '', color = {gui = 'bold'}}}, 
             lualine_c = {
                 { function() 
@@ -57,7 +56,7 @@ local function setup_lualine()
             },
             lualine_y = { 'filetype', 'progress' },
             lualine_z = {
-                { 'location', separator = { right = '' }, left_padding = 2 },
+                { 'location',  left_padding = 2 },
             },
         },
         inactive_sections = {
@@ -69,8 +68,8 @@ end
 
 setup_lualine()
 
-vim.api.nvim_create_autocmd("ColorScheme", {
+vim.api.nvim_create_autocmd({"BufEnter", "WinEnter", "ColorScheme"}, {
     callback = function()
-        setup_lualine()
+	setup_lualine()
     end
 })

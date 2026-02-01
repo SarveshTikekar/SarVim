@@ -1,4 +1,6 @@
 -- Plugins for nvim
+
+local env = require("sarveshtikekar.env")
 return {
 
 -- Mason LSP
@@ -110,13 +112,16 @@ return {
         	ensure_installed = { 'lua', 'vim', 'javascript' }, -- Add your languages
         	highlight = { enable = true },
         	indent = { enable = true },
-    	},
-    },
+	}
+     },
 
-    {"sphamba/smear-cursor.nvim",
-  	opts = {
-    		smear_insert_mode = true,
-    		smear_between_neighbor_lines = true,
-  	},
-    },
+     -- For Forkyou integration
+     {
+	"forkyoudev/forkyou.nvim",
+  	config = function()
+    		require("forkyou").setup({
+      			api_token = env.FORKYOU_API_KEY,
+    		})
+  	end
+     },
 }
