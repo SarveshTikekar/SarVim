@@ -20,6 +20,12 @@ global.themeCount = #(themeList.themes)
 vim.cmd("colorscheme " .. "moonfly")
 global.currThemeNumber = 6
 
+local signs = { Error = "󰅚 ", Warn = "󰀪 ", Hint = "󰌶 ", Info = "󰋽 " }
+for type, icon in pairs(signs) do
+  local hl = "DiagnosticSign" .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+end
+
 -- Main Entry to our Ricing setup
 require("sarveshtikekar.lsp").setup()
 require("sarveshtikekar.branches")
@@ -32,7 +38,6 @@ vim.api.nvim_create_autocmd("VimEnter", {
         end
     end,
 })
-
 
 -- Some global settings for checkpointing across sessions
 
@@ -51,19 +56,6 @@ require('sarveshtikekar.config.autocmds')
 -- For SarVim window UI
 local sarvimUI = vim.api.nvim_create_augroup("SarVimUI", {clear = true})
 
--- 1. Open Trouble on load (Pinned will keep it there)
-vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile"}, {
-    group = sarvimUI,
-    callback = function()
-        if vim.bo.buftype == "" and vim.bo.filetype ~= "" then
-            vim.defer_fn(function()
-                require("trouble").open({ mode = "diagnostics" })
-                vim.cmd("wincmd p")
-            end, 150)
-        end
-    end,
-})
-
 -- 2. Reliable Auto-Close when the main buffer is deleted
 vim.api.nvim_create_autocmd("BufDelete", {
     group = sarvimUI,
@@ -76,15 +68,11 @@ vim.api.nvim_create_autocmd("BufDelete", {
                    vim.bo[buf].filetype ~= "" then
                     count = count + 1
                 end
-            end
-            
-            -- Close the window only when no more code files are open
-            if count == 0 then
-                require("trouble").close()
-            end
+	end
         end)
     end,
 })
+
 
 -- Some optimisation settings
 vim.api.nvim_create_autocmd("BufEnter", {

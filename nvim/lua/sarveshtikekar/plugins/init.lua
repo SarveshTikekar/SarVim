@@ -4,8 +4,8 @@ local env = require("sarveshtikekar.env")
 return {
 
 -- Mason LSP
-    	"williamboman/mason.nvim",       
-	"williamboman/mason-lspconfig.nvim",  
+    	"williamboman/mason.nvim",
+	"williamboman/mason-lspconfig.nvim",
     	"neovim/nvim-lspconfig",
 	{ "catppuccin/nvim", name = "catppuccin", priority = 1000 },
 
@@ -71,37 +71,28 @@ return {
     },
 
     {
+	"rachartier/tiny-inline-diagnostic.nvim",
+    	event = "VeryLazy",
+    	priority = 1000,
+    	config = function()
+        	require("tiny-inline-diagnostic").setup({
 
-	"folke/trouble.nvim",
-    opts = {
-        auto_close = false,      -- Don't close when items are gone
-        pinned = true,           -- Bind to the current buffer and stay open
-        open_no_results = true,  -- Ensure it opens even if 0 errors
-        warn_no_results = false, -- Disable the default warning to use our custom text
-        modes = {
-            diagnostics = {
-                win = {
-                	position = "bottom", -- Anchor it to the right
-      			height = 10,
-			wrap = true
-                },
-                sections = {
-                    {
-                        type = "results",
-                        text = { ["no_results"] = "No issues found" },
-                    }
-                },
-            },
-        },
+			preset = "minimal",
+			hi={
+				error="DiagnosticError",
+				warn="DiagnosticWarn",
+				mixing_color="Normal",
+			},
 
-        win = {
-            position = "bottom",
-            height = 10,
-            wrap = true,
-	    winbar = " ",
-        }, 
-    }, 
-   	},
+			options={
+				show_source = {
+					enabled = true,
+				},
+			},
+		})
+        	vim.diagnostic.config({ virtual_text = false }) -- Disable Neovim's default virtual text diagnostics
+    	end,
+    },
 
     {
 
