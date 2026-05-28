@@ -1,23 +1,20 @@
--- Plugins for nvim
+
+-- Global Plugins file for SarVim
+-- Import all required plugins
 
 local env = require("sarveshtikekar.env")
+local barbar = require("sarveshtikekar.plugins.barbar")
+local cyberdream = require("sarveshtikekar.plugins.cyberdream_theme")
+local neoscroll = require("sarveshtikekar.plugins.neoscroll")
 return {
 
 -- Mason LSP
     	"williamboman/mason.nvim",
 	"williamboman/mason-lspconfig.nvim",
     	"neovim/nvim-lspconfig",
-	{ "catppuccin/nvim", name = "catppuccin", priority = 1000 },
-
-    	{ "ellisonleao/gruvbox.nvim", priority = 1000 },
-
-    	{ "savq/melange-nvim", priority = 1000 },
-
-    	{ "vague2k/vague.nvim", priority = 1001 },
-	{ "rose-pine/neovim", name = "rose-pine"},
-
-	{'AlexvZyl/nordic.nvim', name="nordic", priority=1000},
-	{"bluz71/vim-moonfly-colors", name = "moonfly", priority = 1000},
+	{"neanias/everforest-nvim", priority = 1000},
+	cyberdream,
+	neoscroll,
 	{"hrsh7th/nvim-cmp", dependencies={
 		"hrsh7th/cmp-nvim-lsp"
 	}},
@@ -106,13 +103,6 @@ return {
 	}
      },
 
-     -- For Forkyou integration
-     {
-	"forkyoudev/forkyou.nvim",
-  	config = function()
-    		require("forkyou").setup({
-      			api_token = env.FORKYOU_API_KEY,
-    		})
-  	end
-     },
+     -- For barbar
+     barbar,
 }

@@ -1,13 +1,11 @@
+# Themes for the Vim + Termux Workflow
+
 local themeList = {}
 
 themeList.themes = {
-	
-	"gruvbox", 
-	"vague", 
-	"rose-pine", 
-	"catppuccin",
-	"nordic",
-	"moonfly",
-}
 
+	"cyberdream",
+	"everforest"
+}
+	
 return themeList

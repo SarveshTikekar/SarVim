@@ -1,4 +1,6 @@
-require("sarveshtikekar.remaps")
+-- Reload the remaps
+
+require("sarveshtikekar.remaps.remaps")
 
 -- Entry point for lazy plugins (To be always loaded first)
 vim.opt.rtp:prepend("~/.local/share/nvim/lazy/lazy.nvim")
@@ -15,10 +17,12 @@ local global = vim.g
 vim.opt.termguicolors = true
 
 -- For themes
+local math = require("math")
 local themeList = require("sarveshtikekar.ui.themeList")
 global.themeCount = #(themeList.themes)
-vim.cmd("colorscheme " .. "moonfly")
-global.currThemeNumber = 6
+local themeNumber = math.random(global.themeCount)
+vim.cmd("colorscheme " .. themeList.themes[themeNumber])
+global.currThemeNumber = themeNumber
 
 local signs = { Error = "󰅚 ", Warn = "󰀪 ", Hint = "󰌶 ", Info = "󰋽 " }
 for type, icon in pairs(signs) do
@@ -27,7 +31,7 @@ for type, icon in pairs(signs) do
 end
 
 -- Main Entry to our Ricing setup
-require("sarveshtikekar.lsp").setup()
+require("sarveshtikekar.language-servers.lsp").setup()
 require("sarveshtikekar.branches")
 
 vim.api.nvim_create_autocmd("VimEnter", {
@@ -90,3 +94,16 @@ vim.ui.open = function(path)
 
   os.execute(cmd)
 end
+
+-- Transparent background (re-applied after every colorscheme change)
+local function apply_transparency()
+    vim.api.nvim_set_hl(0, "Normal",      { bg = "NONE" })
+    vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE" })
+    vim.api.nvim_set_hl(0, "NormalNC",   { bg = "NONE" })
+end
+
+apply_transparency() -- apply on startup
+vim.api.nvim_create_autocmd("ColorScheme", {
+    pattern = "*",
+    callback = apply_transparency,
+})

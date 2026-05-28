@@ -17,7 +17,7 @@ local function setup_lualine()
         normal = {
             a = { fg = colors.white, bg = bgc },
             b = { fg = colors.white, bg = bgc },
-            c = { fg = colors.white, bg = bgc }, -- Added bgc for continuity
+            c = { fg = colors.white, bg = bgc },
         },
         inactive = {
             a = { fg = colors.white, bg = bgc },
@@ -26,50 +26,71 @@ local function setup_lualine()
         },
     }
 
+    local sep = { function() return '❮' end, color = { fg = '#D4AF37', bg = bgc }, padding = 0}
+
     require('lualine').setup {
         options = {
             theme = bubble_theme,
-            component_separators = '', 
+            component_separators = '',
+            section_separators   = '',
         },
-        -- SECTIONS must be out here, not inside options
         sections = {
-            lualine_a = { { 'mode', separator = { right = '' }, right_padding = 2 } },
-            lualine_b = { {'filename'}, {'branch', icon = '', color = {gui = 'bold'}}}, 
-            lualine_c = {
-                { function() 
-                    return require("sarveshtikekar.branches").get_active_branch()
-                  end, 
-                  icon = "󰙅", color = {fg = colors.white, bg = bgc, gui = 'bold'},
-                },
-                { function()     
-                    return require("sarveshtikekar.branches").get_active_checkpoint()
-                  end, 
-                  icon="", color = {fg = colors.white, bg = bgc, gui = 'bold'},
-                }
-            },
+            lualine_a = {},
+            lualine_b = {},
+            lualine_c = {},
+
+            -- Right side: gold ❯ between every component
             lualine_x = {
+                { 'mode' },
+                sep,
+                { 'filename' },
+                sep,
                 { function()
-                    return require("sarveshtikekar.ui.themeList").themes[vim.g.currThemeNumber]
-                  end, 
-                  icon='', color = {fg = colors.white, bg = bgc}
-                }
+                    return require("sarveshtikekar.branches").get_active_branch()
+                  end,
+                  color = { fg = colors.white, bg = bgc, gui = 'bold' },
+                },
+                sep,
+                { function()
+                    return require("sarveshtikekar.branches").get_active_checkpoint()
+                  end,
+                  color = { fg = colors.white, bg = bgc, gui = 'bold' },
+                },
             },
-            lualine_y = { 'filetype', 'progress' },
+            lualine_y = {
+                sep,
+                'filetype',
+            },
             lualine_z = {
-                { 'location',  left_padding = 2 },
+                sep,
+                'location',
             },
         },
         inactive_sections = {
-            lualine_a = { 'filename' },
+            lualine_a = {},
+            lualine_b = {},
+            lualine_c = {},
+            lualine_x = { 'filename' },
+            lualine_y = {},
             lualine_z = { 'location' },
         },
     }
+
+    -- Force transparent statusline — lualine doesn't clear Neovim's
+    -- StatusLine hl group, which fills the bar with the theme's bg color.
+    vim.api.nvim_set_hl(0, 'StatusLine',   { bg = 'NONE' })
+    vim.api.nvim_set_hl(0, 'StatusLineNC', { bg = 'NONE' })
 end
 
-setup_lualine()
+vim.schedule(setup_lualine) -- deferred so apply_transparency() in init.lua runs first
 
-vim.api.nvim_create_autocmd({"BufEnter", "WinEnter", "ColorScheme"}, {
+vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter", "ColorScheme" }, {
     callback = function()
-	setup_lualine()
+        -- Defer so apply_transparency() always runs first,
+        -- ensuring color_adjuster reads Normal.bg correctly
+        vim.schedule(function()
+            setup_lualine()
+        end)
     end
 })
+

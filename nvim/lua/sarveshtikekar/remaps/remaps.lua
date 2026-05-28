@@ -147,7 +147,7 @@ end, {noremap=true})
 
 -- Theme toggler (Decremental)
 vim.keymap.set({'n', 'v'}, "gt", function() 
-	local themes = themeList.themes 
+	local themes = require("sarveshtikekar.ui.themeList") 
 	global.currThemeNumber = (global.currThemeNumber - 1)
 
 	if global.currThemeNumber == 0 then
@@ -194,3 +194,5 @@ vim.keymap.set({"v", "n"}, "<leader>f", function()
 	vim.cmd("later " .. count .. "s")
 	vim.notify("Reverted back to file state at: " .. os.date("%X", os.time() - count))
 end, {silent=true, noremap=true})
+
+local barbar = require('sarveshtikekar.plugins.barbar.remaps')
