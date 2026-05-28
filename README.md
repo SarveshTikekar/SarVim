@@ -1,3 +1,7 @@
+<img width="1919" height="1023" alt="image" src="https://github.com/user-attachments/assets/af95352e-fe7a-440d-b1da-5a8a7027d189" />
+<br> <br>
+<img width="1827" height="968" alt="image" src="https://github.com/user-attachments/assets/5e2c53b7-9a2e-4767-af4c-185729672fff" />
+
 # SarVim
 
 **SarVim** is a custom, lightweight, and high-performance development environment configuration for Neovim and Tmux. It is designed to be clean, modular, and fast, focused on clarity, control, and learning rather than stacking prebuilt configs.
