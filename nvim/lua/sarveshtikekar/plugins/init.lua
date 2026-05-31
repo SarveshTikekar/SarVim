@@ -1,11 +1,14 @@
 
 -- Global Plugins file for SarVim
--- Import all required plugins
 
-local env = require("sarveshtikekar.env")
+-- Import all required plugins
+local forkyou = require("sarveshtikekar.plugins.forkyou")
 local barbar = require("sarveshtikekar.plugins.barbar")
 local cyberdream = require("sarveshtikekar.plugins.cyberdream_theme")
 local neoscroll = require("sarveshtikekar.plugins.neoscroll")
+local telescope = require("sarveshtikekar.plugins.telescope_ff")
+local copilot = require("sarveshtikekar.plugins.copilot")
+
 return {
 
 -- Mason LSP
@@ -26,49 +29,9 @@ return {
     	{"L3MON4D3/LuaSnip",
 		tag = "v2.4.1",
 		run = "make install_jsregexp"},
-    {
-	'nvim-telescope/telescope.nvim',
-        tag = '0.1.8',
-        dependencies = { 
-            'nvim-lua/plenary.nvim',
-            { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' }
-        },
-        config = function()
-            local telescope = require('telescope')
-            telescope.setup({
-                defaults = {
-                    prompt_prefix = " ",
-                    selection_caret = " ",
-                    entry_prefix = " ",
-                    sorting_strategy = "ascending",
-                    layout_strategy = "horizontal",
-                    layout_config = {
-                        horizontal = {
-                            prompt_position = "top",
-                            preview_width = 0.5,
-                        },
-                        width = 0.2,
-                        height = 0.2,
-                    },
-                    borderchars = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
-                },
-                pickers = {
-                    find_files = {
-                        theme = "dropdown",
-                        previewer = true,
-                    },
-                    buffers = {
-                        theme = "dropdown",
-                        previewer = false,
-                    }
-                }
-            })
-            telescope.load_extension('fzf')
-        end	
-    },
-
-    {
-	"rachartier/tiny-inline-diagnostic.nvim",
+	
+	telescope,
+    	{"rachartier/tiny-inline-diagnostic.nvim",
     	event = "VeryLazy",
     	priority = 1000,
     	config = function()
@@ -87,7 +50,7 @@ return {
 				},
 			},
 		})
-        	vim.diagnostic.config({ virtual_text = false }) -- Disable Neovim's default virtual text diagnostics
+        vim.diagnostic.config({ virtual_text = false }) 
     	end,
     },
 
@@ -105,4 +68,10 @@ return {
 
      -- For barbar
      barbar,
+
+     -- For copilot
+     copilot,
+
+     -- For ForkYou
+     forkyou,
 }

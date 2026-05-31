@@ -90,10 +90,10 @@ Once the script finishes, you need to manually load your new Tmux settings for t
 │           ├── config
 │           │   └── autocmds.lua # Neovim autocommands
 │           ├── env
-│           │   └── init.lua  # Environment settings
+│           │   └── init.lua  # Centralised environment / secrets loader
 │           ├── landing_page
 │           │   ├── land_page.lua # Startup dashboard rendering
-│           │   └── quotes.txt # Dashboard quotes
+│           │   └── quotes.txt    # Dashboard quotes
 │           ├── language-servers
 │           │   └── lsp.lua   # Language Server Protocol settings
 │           ├── lualine_config
@@ -101,13 +101,20 @@ Once the script finishes, you need to manually load your new Tmux settings for t
 │           │   └── init.lua  # Lualine statusline configuration
 │           ├── plugins
 │           │   ├── barbar
-│           │   │   ├── init.lua # Bufferline plugin setup
+│           │   │   ├── init.lua   # Bufferline plugin setup
 │           │   │   └── remaps.lua # Bufferline keymaps
+│           │   ├── copilot
+│           │   │   └── init.lua   # GitHub Copilot integration
 │           │   ├── cyberdream_theme
-│           │   │   └── init.lua # Main UI theme config
-│           │   ├── init.lua  # Plugin specifications list
-│           │   └── neoscroll
-│           │       └── init.lua # Smooth scrolling plugin setup
+│           │   │   └── init.lua   # Main UI theme config
+│           │   ├── forkyou
+│           │   │   └── init.lua   # ForkYou.nvim dev-tracker integration
+│           │   ├── init.lua       # Plugin specifications list
+│           │   ├── neoscroll
+│           │   │   └── init.lua   # Smooth scrolling plugin setup
+│           │   └── telescope_ff
+│           │       ├── init.lua   # Telescope fuzzy finder config
+│           │       └── remaps.lua # Telescope keymaps
 │           ├── remaps
 │           │   └── remaps.lua # Custom Neovim keymaps
 │           ├── scripts
@@ -121,12 +128,21 @@ Once the script finishes, you need to manually load your new Tmux settings for t
 │           ├── stdkeys
 │           │   └── init.lua  # General Neovim options & standard settings
 │           └── ui
-│               ├── icons.lua # General icon symbols config
+│               ├── icons.lua     # General icon symbols config
 │               └── themeList.lua # Lists of available themes
 ├── README.md
 ├── sarvim.sh                 # Unified installation/setup script
-└── tmux
-    └── tmux.conf             # Custom Tmux configuration
+├── tmux
+│   └── tmux.conf             # Custom Tmux configuration
+└── tmux-powerline
+    ├── config.sh             # Tmux-powerline global config
+    ├── segments              # Custom status-bar segment scripts
+    │   ├── basename.sh
+    │   ├── clock_logo.sh
+    │   ├── directory_logo.sh
+    │   └── tmux_logo.sh
+    └── themes
+        └── sarvim_theme.sh   # Custom SarVim tmux-powerline theme
 ```
 
 ---
@@ -134,12 +150,17 @@ Once the script finishes, you need to manually load your new Tmux settings for t
 ## Current Features
 
 - Custom keymaps written from scratch
-- Checkpoints built on top of Neovim’s undo tree
+- Checkpoints built on top of Neovim's undo tree
 - Two types of developer focus themes
-- Lazy vim plugin manager (Without UI)
-- Clean Lua module separation
+- Lazy.nvim plugin manager (headless, without UI)
+- Clean Lua module separation with dedicated plugin sub-directories
 - Transparent backgrounds for Neovim and Tmux
-- Multiple File / Buffer Tabbing in a single Tmux window / Pane
+- Multiple file/buffer tabbing via Barbar in a single Tmux window/pane
+- **Telescope fuzzy finder** — fast file/buffer search with FZF native backend, refactored into its own module (`telescope_ff`)
+- **GitHub Copilot** — AI inline completions via `copilot.vim`
+- **ForkYou.nvim** — developer activity tracker integrated with forkyou.dev, driven by a centralised `env` secrets module
+- **Custom tmux-powerline theme** — `sarvim_theme.sh` with bespoke segments (clock, directory, tmux logo, basename)
+- Tiny-inline diagnostics replacing default virtual-text LSP output
 
 ---
 
