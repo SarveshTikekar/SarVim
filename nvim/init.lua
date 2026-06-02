@@ -16,6 +16,11 @@ local global = vim.g
 --For themes
 vim.opt.termguicolors = true
 
+-- To make sure any buffer changes outside nvim are reflected without any errors
+vim.opt.autoread = true
+
+-- To disable swapfiles in vim
+vim.opt.swapfile = false
 -- For themes
 local math = require("math")
 local themeList = require("sarveshtikekar.ui.themeList")
