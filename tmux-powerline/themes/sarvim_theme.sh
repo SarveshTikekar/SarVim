@@ -8,17 +8,16 @@ if tp_patched_font_in_use; then
 	TMUX_POWERLINE_SEPARATOR_RIGHT_BOLD=""
 	TMUX_POWERLINE_SEPARATOR_RIGHT_THIN=""
 	TMUX_POWERLINE_WINDOW_SEPARATOR=" "
-	TMUX_POWERLINE_THIN_SEPERATOR="|"
-	TMUX_SPACE=" "
-
+	TMUX_POWERLINE_THIN_SEPERATOR="│"
+	TMUX_POWERLINE_THICK_SEPERATOR="┃"
 else
 	TMUX_POWERLINE_SEPARATOR_LEFT_BOLD="◀"
 	TMUX_POWERLINE_SEPARATOR_LEFT_THIN="❮"
 	TMUX_POWERLINE_SEPARATOR_RIGHT_BOLD="▶"
 	TMUX_POWERLINE_SEPARATOR_RIGHT_THIN="❯"
 	TMUX_POWERLINE_WINDOW_SEPARATOR=" "
-	TMUX_POWERLINE_THIN_SEPERATOR="|"
-	TMUX_SPACE=" "
+	TMUX_POWERLINE_THIN_SEPERATOR="│"
+	TMUX_POWERLINE_THICK_SEPERATOR="┃"	
 fi
 
 # See Color formatting section below for details on what colors can be used here.
@@ -39,7 +38,7 @@ if [ -z "$TMUX_POWERLINE_WINDOW_STATUS_CURRENT" ]; then
 	TMUX_POWERLINE_WINDOW_STATUS_CURRENT=(
 		"#[fg=black,bg=white]"
 		" #I "
-		"$TMUX_POWERLINE_THIN_SEPERATOR"
+		"$TMUX_POWERLINE_THICK_SEPERATOR"
 		" #W "
 		"#[fg=white,bg=default]"
 		"$TMUX_POWERLINE_WINDOW_SEPARATOR"
@@ -105,16 +104,18 @@ fi
 if [ -z "$TMUX_POWERLINE_LEFT_STATUS_SEGMENTS" ]; then
 
 	TMUX_POWERLINE_LEFT_STATUS_SEGMENTS=(
-		"tmux_logo 0 #1bb91f $TMUX_SPACE"
-		"tmux_session_info 148 234"
-		"hostname 33 0"
+		"tmux_logo 0 #1bb91f $TMUX_POWERLINE_THIN_SEPERATOR 0 no_sep_fg_color"
+		"window_icon 148 234 $TMUX_POWERLINE_THICK_SEPERATOR no_sep_bg_color 0"
+		"$TMUX_POWERLINE_THICK_SEPERATOR no_sep_bg_color no_sep_fg_color"
+		"tmux_session 148 234 $TMUX_POWERLINE_THIN_SEPERATOR 0 0"
+		#"hostname 33 0"
 		#"mode_indicator 165 0"
 		#"ifstat 30 255"
 		#"ifstat_sys 30 255"
 		#"lan_ip 24 255 ${TMUX_POWERLINE_SEPARATOR_RIGHT_THIN}"
 		#"vpn 24 255 ${TMUX_POWERLINE_SEPARATOR_RIGHT_THIN}"
 		#"wan_ip 24 255"
-		"vcs_branch 29 88"
+		"vcs_branch_riced #fb8500 88 $TMUX_POWERLINE_THIN_SEPERATOR no_sep_bg_color 0"
 		#"vcs_compare 60 255"
 		#"vcs_staged 64 255"
 		#"vcs_modified 9 255"
@@ -126,8 +127,8 @@ fi
 if [ -z "$TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS" ]; then
 	TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS=(
 		#"earthquake 3 0"
-		"directory_logo 89 211"
-		"basename 89 211 $TMUX_SPACE"
+		"directory_logo #e5383b 0 $TMUX_POWERLINE_THICK_SEPERATOR no_sep_bg_color 0"
+		"basename #e5383b 0 $TMUX_POWERLINE_THICK_SEPERATOR no_sep_bg_color 0"
 		#"macos_notification_count 29 255"
 		#"mailcount 9 255"
 		# "now_playing 234 37"
@@ -158,8 +159,9 @@ if [ -z "$TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS" ]; then
 		#"tmux_continuum_save"
 		#"tmux_continuum_status 14 7"
 		#"date_day 235 136"
-		"date 235 136 ${TMUX_POWERLINE_SEPARATOR_LEFT_THIN}"
-		"time 235 136 ${TMUX_POWERLINE_SEPARATOR_LEFT_THIN}"
+		#"date 235 136 ${TMUX_POWERLINE_SEPARATOR_LEFT_THIN}"
+		"clock_logo 235 136 $TMUX_POWERLINE_THICK_SEPERATOR 0 0"
+		"time_rice 235 136 $TMUX_POWERLINE_THICK_SEPERATOR 235 136"
 		#"utc_time 235 136 ${TMUX_POWERLINE_SEPARATOR_LEFT_THIN}"
 	)
 fi

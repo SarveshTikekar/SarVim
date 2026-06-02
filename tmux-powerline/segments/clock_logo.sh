@@ -1,3 +1,6 @@
 #!/bin/bash
 
-echo ' 󰥔 '
+run_segment(){
+	echo '󰥔'
+	return 0
+}
