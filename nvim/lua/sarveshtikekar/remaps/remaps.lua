@@ -196,3 +196,4 @@ vim.keymap.set({"v", "n"}, "<leader>f", function()
 end, {silent=true, noremap=true})
 
 local barbar = require('sarveshtikekar.plugins.barbar.remaps')
+local telescope = require('sarveshtikekar.plugins.telescope_ff.remaps')

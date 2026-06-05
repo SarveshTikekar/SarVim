@@ -21,6 +21,16 @@ vim.opt.autoread = true
 
 -- To disable swapfiles in vim
 vim.opt.swapfile = false
+
+-- For autoreading of files when they are changed outside of nvim
+vim.opt.autoread = true
+
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
+  callback = function()
+    vim.cmd("checktime")
+  end,
+})
+
 -- For themes
 local math = require("math")
 local themeList = require("sarveshtikekar.ui.themeList")

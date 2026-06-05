@@ -1,5 +1,5 @@
 -- Setup for Fuzz finder across multiple files
---
+
 return {
 	'nvim-telescope/telescope.nvim',
         tag = '0.1.8',
@@ -15,28 +15,31 @@ return {
                     selection_caret = " ",
                     entry_prefix = " ",
                     sorting_strategy = "ascending",
-                    layout_strategy = "horizontal",
+                    layout_strategy = "center",
                     layout_config = {
-                        horizontal = {
-                            prompt_position = "top",
-                            preview_width = 0.5,
+                        center = {
+                            width = 0.7,
+                            height = 0.65,
                         },
-                        width = 0.2,
-                        height = 0.2,
                     },
                     borderchars = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
                 },
                 pickers = {
                     find_files = {
-                        theme = "dropdown",
                         previewer = true,
+                        cwd = vim.fn.expand("~"),
                     },
                     buffers = {
-                        theme = "dropdown",
                         previewer = false,
+                    },
+
+                    live_grep = {
+                        previewer = true,
+                        cwd = vim.fn.expand("~"),
                     }
                 }
             })
             telescope.load_extension('fzf')
+            require('sarveshtikekar.plugins.telescope_ff.remaps')
         end
 }

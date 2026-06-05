@@ -106,7 +106,6 @@ if [ -z "$TMUX_POWERLINE_LEFT_STATUS_SEGMENTS" ]; then
 	TMUX_POWERLINE_LEFT_STATUS_SEGMENTS=(
 		"tmux_logo 0 #1bb91f $TMUX_POWERLINE_THIN_SEPERATOR 0 no_sep_fg_color"
 		"window_icon 148 234 $TMUX_POWERLINE_THICK_SEPERATOR no_sep_bg_color 0"
-		"$TMUX_POWERLINE_THICK_SEPERATOR no_sep_bg_color no_sep_fg_color"
 		"tmux_session 148 234 $TMUX_POWERLINE_THIN_SEPERATOR 0 0"
 		#"hostname 33 0"
 		#"mode_indicator 165 0"
