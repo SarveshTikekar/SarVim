@@ -1,171 +1,164 @@
-<img width="1919" height="1023" alt="image" src="https://github.com/user-attachments/assets/af95352e-fe7a-440d-b1da-5a8a7027d189" />
-<br> <br>
-<img width="1827" height="968" alt="image" src="https://github.com/user-attachments/assets/5e2c53b7-9a2e-4767-af4c-185729672fff" />
+<div align="center">
+  <img width="1919" height="1023" alt="SarVim Environment Active" src="https://github.com/user-attachments/assets/af95352e-fe7a-440d-b1da-5a8a7027d189" />
+  <br> <br>
+  <img width="1827" height="968" alt="SarVim Code View" src="https://github.com/user-attachments/assets/5e2c53b7-9a2e-4767-af4c-185729672fff" />
+</div>
 
 # SarVim
 
-**SarVim** is a custom, lightweight, and high-performance development environment configuration for Neovim and Tmux. It is designed to be clean, modular, and fast, focused on clarity, control, and learning rather than stacking prebuilt configs.
+**SarVim** is a curated, modular, and high-performance development environment configuration for Neovim, Tmux, Kitty/Alacritty, and the Zsh Spaceship Prompt. Designed to prioritize speed, visual clarity, and deep customization control, SarVim avoids bloated prebuilt configurations in favor of a clean, well-documented architecture that serves both as a daily-driver development suite and a learning tool for shell and editor internals.
 
-It is built incrementally to understand:
-- Neovim internals
-- Lua module lifecycle
-- Buffer, undo, and state management
-- Plugin-grade architecture
-- Making a switch to Vim motions and its environment for development
+## Core Philosophy & Learning Goals
 
----
-
-## Prerequisites & Dependencies
-
-To ensure all visual features, icons, and statuslines render correctly, your system should meet the following requirements:
-
-*   **Operating System:** Ubuntu `v22.04` or newer (for full modern package compatibility)
-*   **Neovim:** `v0.9.0` or newer (Recommended: `v0.10.0+` for full API features)
-*   **Tmux:** `v3.3` or newer (Required for features like `allow-passthrough` to work seamlessly)
-*   **Terminal Emulator:** [Alacritty](https://alacritty.org/) (Highly recommended for configuration rendering and performance)
-*   **Shell:** [Oh My Zsh](https://ohmyz.sh/) (Optional but recommended for standard development experience)
-*   **Nerd Font:** [CaskaydiaCove Nerd Font](https://github.com/ryanoasis/nerd-fonts) (Automatically installed by the setup script)
+SarVim is built from the ground up to facilitate understanding in:
+- **Neovim Internals & APIs:** Leveraging Lua-first configurations to control editor behavior.
+- **Modular Plugin Architecture:** Structured division of concerns, using headless package management.
+- **Environment Integration:** Seamless coordination between shell buffers, window managers (Tmux), and terminal emulators.
+- **Workflow Efficiency:** Accelerating transitions to Vim motions and CLI-driven programming.
 
 ---
 
-## Quick Start & Installation
+## System Requirements & Prerequisites
 
-Setting up SarVim is fully automated. Run the unified setup script on your Ubuntu PC:
+For full compatibility and correct rendering of Nerd Fonts, statuslines, and icons, ensure your host environment meets the following specifications:
+
+- **Operating System:** Ubuntu `22.04 LTS` or newer (or equivalent Debian-based distributions).
+- **Shell:** [Zsh](https://www.zsh.org/) (Recommended with [Oh My Zsh](https://ohmyz.sh/) for Spaceship integration).
+- **Neovim:** `v0.9.0` or newer (Recommended: `v0.10.0+` for modern API capabilities).
+- **Tmux:** `v3.3` or newer (Supports advanced terminal passthrough features).
+- **Terminal Emulator:** [Alacritty](https://alacritty.org/) or [Kitty](https://sw.kovidgoyal.net/kitty/) (Configs provided for both).
+- **Font:** [CaskaydiaCove Nerd Font](https://github.com/ryanoasis/nerd-fonts) (Automated installation included in script).
+
+---
+
+## Automated Setup & Installation
+
+You can automatically set up and configure the entire environment by running the unified installation script:
 
 ```bash
 git clone https://github.com/SarveshTikekar/SarVim.git && cd SarVim
+chmod +x sarvim.sh
 ./sarvim.sh
 ```
 
-### What the Script Does:
-1.  **Dependency Verification:** Checks for and installs standard system tools (`curl`, `git`, `unzip`, `tmux`, `fontconfig`) if missing.
-2.  **Neovim Check:** Installs Neovim stable via AppImage if not already installed.
-3.  **CaskaydiaCove Nerd Font:** Downloads, installs, and updates the system font cache automatically.
-4.  **Neovim Config Setup:** Backs up your existing Neovim config (`~/.config/nvim`) and copies the SarVim Neovim configuration.
-5.  **Lazy.nvim Bootstrapping:** Installs the headless plugin manager (`lazy.nvim`) without UI prompts.
-6.  **Tmux Configuration:** Sets up `tmux.conf` at `~/.config/tmux/tmux.conf` and installs the **Tmux Plugin Manager (TPM)**, resolving configuration paths automatically.
+### Installation Steps Executed by the Script:
+1. **System Dependencies:** Checks for and installs standard system tools (`curl`, `git`, `unzip`, `tmux`, `fontconfig`) using the local package manager.
+2. **Neovim Auto-Install:** Installs the latest stable Neovim version via AppImage if no existing compatible binary is found.
+3. **Typography & Fonts:** Downloads, installs, and registers the **CaskaydiaCove Nerd Font** to the system font directory and refreshes the font cache.
+4. **Neovim Configuration:** Backs up any existing configurations in `~/.config/nvim` and deploys SarVim's custom Neovim setup.
+5. **Lazy.nvim Bootstrapping:** Installs the package manager headlessly, ready to initialize plugins on first launch.
+6. **Tmux Configuration:** Sets up custom window settings, bindings, and installs the **Tmux Plugin Manager (TPM)** to `~/.config/tmux/plugins/tpm`.
+7. **Terminal Emulators:** Configures both **Alacritty** (`~/.config/alacritty/alacritty.toml`) and **Kitty** (`~/.config/kitty/kitty.conf`) to optimize rendering, performance, and transparency.
+8. **Spaceship Prompt:** Places custom prompt preferences at `~/.config/spaceship.zsh` and configures Zsh to load it.
 
 ---
 
-## Tmux Post-Installation Setup
+## Post-Installation Verification & Setup
 
-Once the script finishes, you need to manually load your new Tmux settings for the first time:
-
-1.  **Open a new Tmux session:**
-    ```bash
-    cd ~ && tmux
-    ```
-2.  **Open the Tmux command prompt:**
-    Press `Ctrl + b` followed immediately by the colon key (`:`).
-3.  **Source the configuration file:**
-    Type the following command in the prompt at the bottom of the screen and press `Enter`:
-    ```tmux
-    source-file ~/.config/tmux/tmux.conf
-    ```
-4.  **Install Tmux Plugins:**
-    Press your new prefix `Ctrl + a`, then capital `I` (i.e. `Ctrl + a` followed by `Shift + i`) to fetch and install `tmux-powerline` and other plugins.
-
+### 1. Activating Tmux Settings
+To load the newly installed Tmux settings for the first time:
+1. Open a new Tmux session:
+   ```bash
+   tmux
+   ```
+2. Open the Tmux command prompt by pressing `Ctrl + b` followed immediately by the colon key (`:`).
+3. Type the following command in the prompt at the bottom of the screen and press `Enter`:
+   ```tmux
+   source-file ~/.config/tmux/tmux.conf
+   ```
+4. **Fetch Plugins:** Press `Ctrl + a` followed by `Shift + i` (capital `I`) to download and apply `tmux-powerline` along with other plugins.
 > [!NOTE]
-> Sourcing the file disables the default prefix `Ctrl + b` and activates the custom prefix `Ctrl + a`.
+> Sourcing the custom configuration changes your Tmux prefix key from the default `Ctrl + b` to the more accessible `Ctrl + a`.
+
+### 2. Zsh Spaceship Prompt
+If using Zsh, the installer adds the following sourcing instruction to your `~/.zshrc`:
+```bash
+[ -f "$HOME/.config/spaceship.zsh" ] && source "$HOME/.config/spaceship.zsh"
+```
+Ensure you reload your shell or source `~/.zshrc` to activate:
+```bash
+source ~/.zshrc
+```
 
 ---
 
-## Project Structure
+## Project Structure & Configuration Map
 
 ```
-├── alacritty
-│   └── alacritty.toml        # Alacritty terminal configuration
-├── git_configurations
-│   ├── gitconfig.txt         # Global Git configurations
+├── alacritty/
+│   └── alacritty.toml        # Performance-tuned GPU-accelerated terminal configurations
+├── kitty/
+│   └── kitty.conf            # Advanced Kitty terminal layout and font adjustments
+├── spaceship/
+│   └── spaceship.zsh         # Spaceship Zsh theme layout and visual indicator configurations
+├── git_configurations/
+│   ├── gitconfig.txt         # Custom global git settings
 │   └── post-push.sh          # Git post-push hook script
-├── nvim
-│   ├── init.lua              # Neovim main entry point
-│   ├── lazy-lock.json        # Lazy.nvim plugin lockfile
-│   └── lua
-│       └── sarveshtikekar
-│           ├── autocompletions
-│           │   └── init.lua  # Auto-completion setup
-│           ├── branches
-│           │   └── init.lua  # Git branch integration statusline helper
-│           ├── config
-│           │   └── autocmds.lua # Neovim autocommands
-│           ├── env
-│           │   └── init.lua  # Centralised environment / secrets loader
-│           ├── landing_page
-│           │   ├── land_page.lua # Startup dashboard rendering
-│           │   └── quotes.txt    # Dashboard quotes
-│           ├── language-servers
-│           │   └── lsp.lua   # Language Server Protocol settings
-│           ├── lualine_config
+├── nvim/
+│   ├── init.lua              # Main Neovim configuration entry point
+│   ├── lazy-lock.json        # Pinpoint exact package versions for system stability
+│   └── lua/
+│       └── sarveshtikekar/
+│           ├── autocompletions/
+│           │   └── init.lua  # Auto-completion engines and LSP triggers
+│           ├── branches/
+│           │   └── init.lua  # Statusline Git integration helpers
+│           ├── config/
+│           │   └── autocmds.lua # Context-specific Neovim autocommands
+│           ├── env/
+│           │   └── init.lua  # Modular environment and secrets manager
+│           ├── landing_page/
+│           │   ├── land_page.lua # Startup dashboard UI
+│           │   └── quotes.txt    # Integrated dashboard developer quotes
+│           ├── language-servers/
+│           │   └── lsp.lua   # Code diagnostic engines and LSP hookups
+│           ├── lualine_config/
 │           │   ├── color_adjuster.lua
-│           │   └── init.lua  # Lualine statusline configuration
-│           ├── plugins
-│           │   ├── barbar
-│           │   │   ├── init.lua   # Bufferline plugin setup
-│           │   │   └── remaps.lua # Bufferline keymaps
-│           │   ├── copilot
-│           │   │   └── init.lua   # GitHub Copilot integration
-│           │   ├── cyberdream_theme
-│           │   │   └── init.lua   # Main UI theme config
-│           │   ├── forkyou
-│           │   │   └── init.lua   # ForkYou.nvim dev-tracker integration
-│           │   ├── init.lua       # Plugin specifications list
-│           │   ├── neoscroll
-│           │   │   └── init.lua   # Smooth scrolling plugin setup
-│           │   └── telescope_ff
-│           │       ├── init.lua   # Telescope fuzzy finder config
-│           │       └── remaps.lua # Telescope keymaps
-│           ├── remaps
-│           │   └── remaps.lua # Custom Neovim keymaps
-│           ├── scripts
-│           │   ├── commits_till_date.sh
-│           │   ├── commits_today.sh
-│           │   ├── dominant_languages.sh
-│           │   ├── init.lua  # Statistics collection runner
-│           │   ├── stats
-│           │   │   └── stat-log.txt
-│           │   └── streak_count.sh
-│           ├── stdkeys
-│           │   └── init.lua  # General Neovim options & standard settings
-│           └── ui
-│               ├── icons.lua     # General icon symbols config
-│               └── themeList.lua # Lists of available themes
-├── README.md
-├── sarvim.sh                 # Unified installation/setup script
-├── tmux
-│   └── tmux.conf             # Custom Tmux configuration
-└── tmux-powerline
-    ├── config.sh             # Tmux-powerline global config
-    ├── segments              # Custom status-bar segment scripts
-    │   ├── basename.sh
-    │   ├── clock_logo.sh
-    │   ├── directory_logo.sh
-    │   └── tmux_logo.sh
-    └── themes
-        └── sarvim_theme.sh   # Custom SarVim tmux-powerline theme
+│           │   └── init.lua  # Custom statusline visuals and styling rules
+│           ├── plugins/
+│           │   ├── barbar/   # Buffer management and tab switching mappings
+│           │   ├── copilot/  # GitHub Copilot integrations
+│           │   ├── cyberdream_theme/ # High-contrast developer visual theme
+│           │   ├── forkyou/  # Personal tracking plugin integration
+│           │   ├── init.lua  # Declared plugin stack specification
+│           │   ├── neoscroll/ # Kinematic and smooth scroll configurations
+│           │   └── telescope_ff/ # Advanced fuzzy find module configuration
+│           ├── remaps/
+│           │   └── remaps.lua # Custom navigation and system hotkeys
+│           ├── scripts/      # Activity statistics scripts for custom dashboards
+│           ├── stdkeys/
+│           │   └── init.lua  # Standard Neovim engine adjustments
+│           └── ui/
+│               ├── icons.lua # Base unicode icon specifications
+│               └── themeList.lua # Palette definitions
+├── tmux/
+│   └── tmux.conf             # Bindings, window managers, and styling specifications
+├── tmux-powerline/
+│   ├── config.sh             # Configuration mapping for Tmux visual bars
+│   ├── segments/             # Dynamic shell information status indicators
+│   └── themes/
+│       └── sarvim_theme.sh   # Visual custom styling for Tmux-powerline
+├── README.md                 # Project documentation
+└── sarvim.sh                 # Unified multi-component setup script
 ```
 
 ---
 
-## Current Features
+## Features
 
-- Custom keymaps written from scratch
-- Checkpoints built on top of Neovim's undo tree
-- Two types of developer focus themes
-- Lazy.nvim plugin manager (headless, without UI)
-- Clean Lua module separation with dedicated plugin sub-directories
-- Transparent backgrounds for Neovim and Tmux
-- Multiple file/buffer tabbing via Barbar in a single Tmux window/pane
-- **Telescope fuzzy finder** — fast file/buffer search with FZF native backend, refactored into its own module (`telescope_ff`)
-- **GitHub Copilot** — AI inline completions via `copilot.vim`
-- **ForkYou.nvim** — developer activity tracker integrated with forkyou.dev, driven by a centralised `env` secrets module
-- **Custom tmux-powerline theme** — `sarvim_theme.sh` with bespoke segments (clock, directory, tmux logo, basename)
-- Tiny-inline diagnostics replacing default virtual-text LSP output
+- **Decoupled Configuration Design:** Complete Lua module separation keeps customization neat and simple.
+- **Modern Terminal Support:** Out-of-the-box support for both GPU-accelerated **Alacritty** and resource-optimized **Kitty** terminal configurations.
+- **Tailored Shell Prompt:** Sleek Zsh prompt integration using **Spaceship** configurations to output clean developer states.
+- **State-aware Undo Tree:** Custom checkpoints and history navigation mapped on top of Neovim's native persistent undo history.
+- **Contextual Statusline:** Customized **Tmux Powerline** with custom widgets for a unified status bar layout across terminal windows.
+- **Fuzzy Navigation:** Fast visual navigation built via **Telescope** modules with native FZF capabilities.
+- **AI Assist:** Seamless integration with GitHub Copilot for prompt inline completions.
+- **Modern Diagnostics:** Subdued inline diagnostics replacing default visual noise.
 
 ---
 
-## Upcoming Features
+## Upcoming Roadmap
 
-1. Advanced Fuzzy finding and Searching
-2. AI Tools / Agents Integration
-3. Integration with Kitty Terminal for Arch Linux (Unconfirmed)
+1. **Enhanced Fuzzy Filtering:** Deep search customization with custom tree-sitter integration.
+2. **AI Agent Hooks:** Direct integration of interactive LLM coding agents into buffer sessions.
+3. **Advanced System Diagnostic Tools:** Expanded status indicators showing system resource details in the statusline.

@@ -195,7 +195,7 @@ if [ -n "$TMUX" ]; then
 fi
 
 # -----------------------------------------------------------------------------
-# Step 5: Alacritty Configuration Setup
+# Step 5: Terminal Configurations (Alacritty & Kitty)
 # -----------------------------------------------------------------------------
 print_step "Setting up Alacritty configuration..."
 mkdir -p "$HOME/.config/alacritty"
@@ -210,6 +210,21 @@ if [ -f "alacritty/alacritty.toml" ]; then
     print_success "Alacritty configuration copied to ~/.config/alacritty/alacritty.toml"
 else
     print_warning "Alacritty configuration file not found in the repository."
+fi
+
+print_step "Setting up Kitty configuration..."
+mkdir -p "$HOME/.config/kitty"
+if [ -f "kitty/kitty.conf" ]; then
+    # Backup existing kitty config
+    if [ -f "$HOME/.config/kitty/kitty.conf" ]; then
+        BACKUP_KITTY="$HOME/.config/kitty/kitty.conf.bak_$(date +%Y%m%d_%H%M%S)"
+        print_warning "Existing Kitty config found. Backing up to $BACKUP_KITTY..."
+        mv "$HOME/.config/kitty/kitty.conf" "$BACKUP_KITTY"
+    fi
+    cp kitty/kitty.conf "$HOME/.config/kitty/kitty.conf"
+    print_success "Kitty configuration copied to ~/.config/kitty/kitty.conf"
+else
+    print_warning "Kitty configuration file not found in the repository."
 fi
 
 # -----------------------------------------------------------------------------
@@ -237,7 +252,37 @@ chmod +x "$HOME/.config/nvim/lua/sarveshtikekar/scripts/"*.sh &>/dev/null || tru
 print_success "Dashboard scripts are now executable."
 
 # -----------------------------------------------------------------------------
-# Step 7: Beautiful Completion & Instructions Output
+# Step 7: Spaceship Prompt Configuration Setup
+# -----------------------------------------------------------------------------
+print_step "Setting up Spaceship Prompt configuration..."
+mkdir -p "$HOME/.config"
+if [ -f "spaceship/spaceship.zsh" ]; then
+    # Backup existing spaceship config
+    if [ -f "$HOME/.config/spaceship.zsh" ]; then
+        BACKUP_SPACESHIP="$HOME/.config/spaceship.zsh.bak_$(date +%Y%m%d_%H%M%S)"
+        print_warning "Existing Spaceship config found. Backing up to $BACKUP_SPACESHIP..."
+        mv "$HOME/.config/spaceship.zsh" "$BACKUP_SPACESHIP"
+    fi
+    cp spaceship/spaceship.zsh "$HOME/.config/spaceship.zsh"
+    print_success "Spaceship configuration copied to ~/.config/spaceship.zsh"
+
+    # Check if ~/.zshrc exists and source the config if not already sourced
+    if [ -f "$HOME/.zshrc" ]; then
+        if ! grep -q "spaceship.zsh" "$HOME/.zshrc"; then
+            echo -e "\n# Load Spaceship Prompt configuration\n[ -f \"\$HOME/.config/spaceship.zsh\" ] && source \"\$HOME/.config/spaceship.zsh\"" >> "$HOME/.zshrc"
+            print_success "Added Spaceship config source command to ~/.zshrc"
+        else
+            print_success "Spaceship config source command already exists in ~/.zshrc"
+        fi
+    else
+        print_warning "~/.zshrc not found. Please ensure you source ~/.config/spaceship.zsh manually in your Zsh setup."
+    fi
+else
+    print_warning "Spaceship configuration file not found in the repository."
+fi
+
+# -----------------------------------------------------------------------------
+# Step 8: Beautiful Completion & Instructions Output
 # -----------------------------------------------------------------------------
 echo -e "\n${BOLD}${GREEN}[✓] SarVim development environment setup is complete!${NC}\n"
 

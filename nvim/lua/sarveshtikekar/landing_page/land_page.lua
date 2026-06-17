@@ -141,6 +141,21 @@ function M.show()
   vim.opt_local.number = false
   vim.opt_local.relativenumber = false
 
+  -- Hide tabline for the dashboard buffer and restore when leaving
+  vim.opt.showtabline = 0
+  api.nvim_create_autocmd("BufEnter", {
+    buffer = buf,
+    callback = function()
+      vim.opt.showtabline = 0
+    end,
+  })
+  api.nvim_create_autocmd("BufLeave", {
+    buffer = buf,
+    callback = function()
+      vim.opt.showtabline = 2
+    end,
+  })
+
   local ns = api.nvim_create_namespace("SarVimLanding")
   local ui = api.nvim_list_uis()[1]
   local win_h, win_w = ui.height, ui.width
